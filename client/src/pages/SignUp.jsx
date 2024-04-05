@@ -1,6 +1,14 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function SignUp() {
+
+  const [formData, setFormData] = useState({});
+  
+  function onInputHandler() {
+    
+  }
+
   return (
     <div className="p-3 max-w-lg mx-auto">
       <h1
@@ -12,25 +20,25 @@ export default function SignUp() {
       <form action="" className="flex flex-col gap-4">
         <input
           type="text"
-          placeholder="username . . . ."
+          placeholder="Username . . . ."
+          className="border p-3 rounded-lg foucs:outline-none"
+          id="username"
+        />
+        <input
+          type="text"
+          placeholder="Email . . . ."
+          className="border p-3 rounded-lg"
+          id="email"
+        />
+        <input
+          type="text"
+          placeholder="Create password . . . ."
           className="border p-3 rounded-lg"
           id="username"
         />
         <input
           type="text"
-          placeholder="email . . . ."
-          className="border p-3 rounded-lg"
-          id="username"
-        />
-        <input
-          type="text"
-          placeholder="create-password . . . ."
-          className="border p-3 rounded-lg"
-          id="username"
-        />
-        <input
-          type="text"
-          placeholder="confirm-password . . . ."
+          placeholder="Confirm password . . . ."
           className="border p-3 rounded-lg"
           id="username"
         />
@@ -43,7 +51,7 @@ export default function SignUp() {
       </form>
       <div className="flex gap-2 font-semibold mt-5 justify-center">
         <p>Have an account?</p>
-        <span className="text-blue-700">Sign in</span>
+        <Link to="/sign-in"><span className="text-blue-700">Sign in</span></Link>
       </div>
     </div>
   );
