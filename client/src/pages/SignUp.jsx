@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import UserInterface from "../utils/UserInterface.js";
 import CommonFunction from "../utils/CommonFunctions.js";
 import Validator from "../utils/Validator.js";
@@ -14,8 +14,8 @@ const validator = new Validator();
 export default function SignUp() {
   const [formData, setFormData] = useState({});
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   function setIcon(event) {
     ui.setIcon(
@@ -68,12 +68,16 @@ export default function SignUp() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      if (!data.success) {
-        setError(data.message);
+      if (data.success === false) {
         setLoading(false);
+        const errorElement = commonFunction.getSibling(inputElements[1], "p");
+        ui.setBorder(inputElements[1], ui.BORDER_1PX_RED);
+        errorElement.innerHTML = "Email address is already in use. Please try another email . . . .";
+        return;
       }
+      navigate("/signin");
       setLoading(false);
-      console.log(data);
+      setError(null);
     }
     
   }
@@ -135,7 +139,7 @@ export default function SignUp() {
                 style={{marginTop: "10px"}}
               ></p>
             </div>
-          );
+          );  
         })}
 
         <button
@@ -152,7 +156,6 @@ export default function SignUp() {
             <span className="text-blue-600">Sign in</span>
           </Link>
         </div>
-        <a href=""></a>
       </form>
     </div>
   );
