@@ -11,7 +11,7 @@ export default class Validator {
   EMAIL_PASSWORD_REGEX_PATTERN = /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/;
   UPPERCASE_REGEX_PATTERN = /[A-Z]/;
 
-  isvalidName(inputElement) {
+  isvalidName(inputElement) { 
     if (inputElement) {
       const value = inputElement.value.trim();
       const errorElement = commonFunction.getSibling(inputElement, "p");
