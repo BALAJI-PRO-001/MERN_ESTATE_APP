@@ -6,6 +6,9 @@ export default {
   ],
   theme: {
     extend: {},
+    height: {
+      "70": "70px"
+    },
   },
   plugins: [],
 }
