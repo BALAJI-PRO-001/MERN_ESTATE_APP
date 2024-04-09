@@ -1,7 +1,6 @@
 import express from "express";
 import "dotenv/config";
 import mongoose from "mongoose";
-// import bodyParser from "body-parser";
 import userRouter from "./routes/user.route.js";
 import authRouter from "./routes/auth.route.js";
 
@@ -17,8 +16,6 @@ mongoose
   });
 
 
-// app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(bodyParser.json());
 app.use(express.json());
 
 app.use("/api/user", userRouter);

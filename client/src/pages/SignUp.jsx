@@ -77,7 +77,6 @@ export default function SignUp() {
       }
       navigate("/signin");
       setLoading(false);
-      setError(null);
     }
     
   }
@@ -117,7 +116,7 @@ export default function SignUp() {
                 type={inputConfig.type}
                 id={inputConfig.id}
                 placeholder={inputConfig.placeholder}
-                className="border p-3 rounded-lg pl-10 focus:outline-none w-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 "
+                className="border p-3 rounded-lg pl-10 focus:border-blue-600 focus:outline-none w-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 "
                 onChange={onInputHandler}
                 onBlur={onBlurHandler}
               />

@@ -25,6 +25,25 @@ const signupConfig = [
   },
 ];
 
+
+
+const signinConfig = [
+  {
+    id: "email",
+    placeholder: "Email . . . .",
+    type: "text",
+    imgSrc: ["/images/icons/email-icon.png"],
+  },
+  {
+    id: "password",
+    placeholder: "Password . . . .",
+    type: "password",
+    imgSrc: ["/images/icons/lock-icon.png", "/images/icons/eye-close-icon.png"],
+  }
+];
+
+
 export {
-  signupConfig
+  signupConfig, 
+  signinConfig
 };
