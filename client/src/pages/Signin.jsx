@@ -60,15 +60,6 @@ export default function Signin() {
         },
         body: JSON.stringify(formData),
       });
-      const data = await res.json();
-      if (data.success === false) {
-        setLoading(false);
-        const errorElement = commonFunction.getSibling(inputElements[1], "p");
-        ui.setBorder(inputElements[1], ui.BORDER_1PX_RED);
-        errorElement.innerHTML = "Email address is already in use. Please try another email . . . .";
-        return;
-      }
-      navigate("/signin");
       setLoading(false);
     }
     
