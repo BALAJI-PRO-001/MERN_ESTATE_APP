@@ -60,6 +60,23 @@ export default function Signin() {
         },
         body: JSON.stringify(formData),
       });
+      const data = await res.json();
+      if (data.statusCode == 404) {
+        setLoading(false);
+        const errorElement = commonFunction.getSibling(inputElements[0], "p");
+        ui.setBorder(inputElements[0], ui.BORDER_1PX_RED);
+        ui.setMessage(errorElement, "Email address does not exist. Please try another email . . . .");
+        return;
+      }
+
+      if (data.statusCode == 401) {
+        setLoading(false);
+        const errorElement = commonFunction.getSibling(inputElements[1], "p");
+        ui.setBorder(inputElements[1], ui.BORDER_1PX_RED);
+        ui.setMessage(errorElement, "Incorrect password. Please try again . . . .");
+        return;
+      }
+      navigate("/");
       setLoading(false);
     }
     
@@ -129,7 +146,7 @@ export default function Signin() {
           {loading ? "LOADING . . . " : "SIGN IN"}
         </button>
         <div className="flex gap-2 mt-3 m-auto font-semibold">
-          <p>Have an account?</p>
+          <p>Dont have an account?</p>
           <Link to="/signup">
             <span className="text-blue-600">Sign up</span>
           </Link>
