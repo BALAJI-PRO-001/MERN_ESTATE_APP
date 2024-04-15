@@ -103,7 +103,7 @@ export default function SignUp() {
     <div className="p-3 max-w-lg mx-auto">
       <h1
         className="text-3xl text-center font-semibold my-7 mb-2"
-        style={{ fontFamily: "fantasy" }}
+        style={{ fontFamily:"sans-serif"}}
       >
         Sign Up
       </h1>
@@ -143,7 +143,7 @@ export default function SignUp() {
 
         <button
           className="bg-slate-700 text-white p-3 mt-4 rounded-lg hover:opacity-95 disabled:opacity-80"
-          style={{ fontFamily: "fantasy" }}
+          style={{ fontFamily: "sans-serif" }}
           onClick={handleSubmit}
           disabled={loading}
         >
