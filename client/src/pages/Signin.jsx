@@ -4,6 +4,8 @@ import UserInterface from "../utils/UserInterface.js";
 import CommonFunction from "../utils/CommonFunctions.js";
 import Validator from "../utils/Validator.js";
 import { signinConfig } from "../utils/AppConfigs.js";
+import { useDispatch } from "react-redux";
+import { signInStart, signInSuccess, signInFailure } from "../redux/user/userSlice.js";
 
  
 const ui = new UserInterface();
@@ -15,6 +17,7 @@ export default function Signin() {
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   function setIcon(event) {
     ui.setIcon(
@@ -52,7 +55,7 @@ export default function Signin() {
     }
 
     if (commonFunction.isTrue(booleans)) {
-      setLoading(true);
+      dispatch(signInStart());
       const res = await fetch("/api/auth/signin", {
         method: "POST",
         headers: {
@@ -62,7 +65,7 @@ export default function Signin() {
       });
       const data = await res.json();
       if (data.statusCode == 404) {
-        setLoading(false);
+        dispatch(signInFailure());
         const errorElement = commonFunction.getSibling(inputElements[0], "p");
         ui.setBorder(inputElements[0], ui.BORDER_1PX_RED);
         ui.setMessage(errorElement, "Email address does not exist. Please try another email . . . .");
@@ -76,6 +79,7 @@ export default function Signin() {
         ui.setMessage(errorElement, "Incorrect password. Please try again . . . .");
         return;
       }
+      dispatch(signInSuccess(data));
       navigate("/");
       setLoading(false);
     }
