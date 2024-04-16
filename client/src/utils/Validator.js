@@ -8,7 +8,7 @@ export default class Validator {
 
   NUMERIC_CHARACTER_REGEX_PATTERN = /\d/;
   SPECIAL_CHARACTER_REGEX_PATTERN = /[^a-zA-Z0-9\s]/;
-  EMAIL_PASSWORD_REGEX_PATTERN = /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/;
+  EMAIL_REGEX_PATTERN = /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/;
   UPPERCASE_REGEX_PATTERN = /[A-Z]/;
 
   isvalidName(inputElement) { 
@@ -57,7 +57,7 @@ export default class Validator {
         return false;
       } 
 
-      if (!this.EMAIL_PASSWORD_REGEX_PATTERN.test(value)) {
+      if (!this.EMAIL_REGEX_PATTERN.test(value)) {
         ui.setBorder(inputElement, ui.BORDER_1PX_RED);
         ui.setMessage(errorElement, "Invalid email address. Please enter a valid email . . . . .");
         return false;
