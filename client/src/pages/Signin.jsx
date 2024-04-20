@@ -6,6 +6,7 @@ import Validator from "../utils/Validator.js";
 import { signinConfig } from "../utils/AppConfigs.js";
 import { useDispatch, useSelector } from "react-redux";
 import { signInStart, signInSuccess, signInFailure } from "../redux/user/userSlice.js";
+import OAuth from "../components/OAuth.jsx";
 
  
 const ui = new UserInterface();
@@ -148,6 +149,7 @@ export default function Signin() {
         >
           {loading ? "LOADING . . . " : "SIGN IN"}
         </button>
+        <OAuth></OAuth>
         <div className="flex gap-2 mt-3 m-auto font-semibold">
           <p>Dont have an account?</p>
           <Link to="/signup">

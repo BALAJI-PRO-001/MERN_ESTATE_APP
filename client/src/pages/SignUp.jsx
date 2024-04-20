@@ -4,6 +4,7 @@ import UserInterface from "../utils/UserInterface.js";
 import CommonFunction from "../utils/CommonFunctions.js";
 import Validator from "../utils/Validator.js";
 import { signupConfig } from "../utils/AppConfigs.js";
+import OAuth from "../components/OAuth.jsx";
 
  
 const ui = new UserInterface();
@@ -78,7 +79,7 @@ export default function SignUp() {
       navigate("/signin");
       setLoading(false);
     }
-    
+     
   }
 
 
@@ -149,6 +150,7 @@ export default function SignUp() {
         >
           {loading ? "LOADING . . . " : "SIGN UP"}
         </button>
+        <OAuth></OAuth>
         <div className="flex gap-2 mt-3 m-auto font-semibold">
           <p>Have an account?</p>
           <Link to="/signin">
