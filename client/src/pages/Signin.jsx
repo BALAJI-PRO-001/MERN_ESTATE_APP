@@ -4,7 +4,7 @@ import UserInterface from "../utils/UserInterface.js";
 import CommonFunction from "../utils/CommonFunctions.js";
 import Validator from "../utils/Validator.js";
 import { signinConfig } from "../utils/AppConfigs.js";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { signInStart, signInSuccess, signInFailure } from "../redux/user/userSlice.js";
 
  
@@ -15,7 +15,7 @@ const validator = new Validator();
 
 export default function Signin() {
   const [formData, setFormData] = useState({});
-  const [loading, setLoading] = useState(false);
+  const { loading } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -73,7 +73,7 @@ export default function Signin() {
       }
 
       if (data.statusCode == 401) {
-        setLoading(false);
+        dispatch(signInFailure());
         const errorElement = commonFunction.getSibling(inputElements[1], "p");
         ui.setBorder(inputElements[1], ui.BORDER_1PX_RED);
         ui.setMessage(errorElement, "Incorrect password. Please try again . . . .");
@@ -81,7 +81,6 @@ export default function Signin() {
       }
       dispatch(signInSuccess(data));
       navigate("/");
-      setLoading(false);
     }
     
   }
