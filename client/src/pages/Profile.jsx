@@ -24,6 +24,38 @@ export default function Profile() {
     );
   }
 
+
+  function onBlurHandler(event) {
+    const inputElement = event.target;
+    if (inputElement.id === "userName") 
+      validator.isvalidName(inputElement);
+
+    if (inputElement.id === "email")
+      validator.isvalidEmail(inputElement);
+
+    if (inputElement.id === "password") 
+      validator.isvalidPassword(inputElement);
+  }
+
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+    const inputElements = commonFunction.getSiblings(event.target, "input");
+    const booleans = [];
+
+    for (let inputElement of inputElements) {
+      if (inputElement.id === "userName") 
+        booleans.push(validator.isvalidName(inputElement));
+
+      if (inputElement.id === "email")
+        booleans.push( validator.isvalidEmail(inputElement));
+
+      if (inputElement.id === "password")
+        booleans.push(validator.isvalidPassword(inputElement));
+    }
+     
+  }
+
   return (
     <div className="p-3 max-w-lg mx-auto">
       <form className="flex flex-col">
@@ -41,7 +73,7 @@ export default function Profile() {
                 placeholder={config.placeholder}
                 className="border p-3 rounded-lg pl-10 focus:border-blue-600 focus:outline-none w-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 "
                 // onChange={onInputHandler}
-                // onBlur={onBlurHandler}
+                onBlur={onBlurHandler}
               />
               <img
                 src={config.imgSrc[0]}
@@ -66,20 +98,36 @@ export default function Profile() {
         <button
           className="bg-slate-700 text-white p-3 mt-4 rounded-lg hover:opacity-95 disabled:opacity-80"
           style={{ fontFamily: "sans-serif" }}
-          // onClick={handleSubmit}
+          onClick={handleSubmit}
           // disabled={loading}
         >
           UPDATE
         </button>
       </form>
       <div className="flex justify-between gap-3 mt-2">
-        <span className="font-semibold p-3 bg-red-600 rounded-lg text-white cursor-pointe w-1/2 text-center">
+        <span className="font-semibold p-3 bg-red-600 rounded-lg text-white cursor-pointe w-1/2 text-center hover:opacity-90">
           Delete Account
         </span>
-        <span className="font-semibold p-3 bg-red-600 rounded-lg text-white cursor-pointer w-1/2 text-center">
+        <span className="font-semibold p-3 bg-red-600 rounded-lg text-white cursor-pointer w-1/2 text-center hover:opacity-90">
           Sign out
         </span>
       </div>
+      <button
+          className="bg-green-700 text-white p-3 mt-4 rounded-lg hover:opacity-95 disabled:opacity-80 w-full"
+          style={{ fontFamily: "sans-serif" }}
+          // onClick={handleSubmit}
+          // disabled={loading}
+        >
+          Create Listing
+        </button>
+      <button
+          className="bg-green-700 text-white p-3 mt-4 rounded-lg hover:opacity-95 disabled:opacity-80 w-full"
+          style={{ fontFamily: "sans-serif" }}
+          // onClick={handleSubmit}
+          // disabled={loading}
+        >
+          Show Listings
+        </button>
     </div>
   );
 }
