@@ -3,13 +3,25 @@ import { profileConfig } from "../utils/AppConfigs.js";
 import UserInterface from "../utils/UserInterface.js";
 import Validator from "../utils/Validator.js";
 import CommonFunction from "../utils/CommonFunctions.js";
+import { useRef, useState, useEffect } from "react";
+import { getStorage, ref, uploadBytesResumable } from "firebase/storage";
+import { app } from "../utils/firebase.js";
 
 const ui = new UserInterface();
 const commonFunction = new CommonFunction();
 const validator = new Validator();
 
+/* firebase storage rules 
+    allow read;
+    allow write: if 
+    request.resource.size < 2 * 1024 * 1024 &&
+    request.resource.contentType.matches("images/.*	")
+*/
+
 export default function Profile() {
   const { currentUser } = useSelector((state) => state.user);
+  const fileRef = useRef(null);
+  const [file, setFile] = useState(undefined);
 
   function setIcon(event) {
     ui.setIcon(
@@ -56,13 +68,35 @@ export default function Profile() {
      
   }
 
+
+  useEffect(() => {
+    if (file) {
+      handleFileUpload(file);
+    }
+  }, [file]);
+
+
+  function handleFileUpload(file) {
+    const storage = getStorage(app);
+    const fileName = new Date().getTime() + file.name;
+    const storageRef = ref(storage, fileName);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on("state_changed", (snapshot) => {
+      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      console.log("Upload is: ", progress);
+    });
+  }
+
   return (
     <div className="p-3 max-w-lg mx-auto">
       <form className="flex flex-col">
+        <input type="file" ref={fileRef} hidden onChange={(event) => setFile(event.target.files[0])}/>
         <img
           className="rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-4"
           src={currentUser.avatar}
           alt="profile"
+          onClick={() => fileRef.current.click()}
         />
         {profileConfig.map((config) => {
           return (
