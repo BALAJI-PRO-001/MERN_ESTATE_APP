@@ -4,6 +4,8 @@ import "dotenv/config";
 import User from "../models/user.model.js";
 import errorHandler from "../utils/error.js";
 
+
+
 export const signup = async (req, res, next) => {
   const { userName, email, password } = req.body;
   const hashedPassword = bcryptjs.hashSync(password, 10);
@@ -26,8 +28,38 @@ export const signin = async (req, res, next) => {
     if (!isvalidPassword) return next(errorHandler(401, "Invalid password!"));
     const token = jwt.sign(validUser._id.toString(), process.env.JWT_SECRET_KEY);
     const {password: pass, ...user} = validUser._doc;
-    res.cookie("access_token", token, {httpOnly: true}).status(200).json({user});
+    res.cookie("access_token", token, {httpOnly: true})
+       .status(200)
+       .json(user);
   } catch(error) {
     next(error);  
+  }
+}
+
+
+
+export const google = async (req, res, next) => {
+  try {
+    const user = await User.findOne({email: req.body.email});
+    if (user) {
+      const token = jwt.sign(user._id.toString(), process.env.JWT_SECRET_KEY);
+      const { password: pass, ...rest} = user._doc;
+      res.cookie("access_token", token, {httpOnly: true})
+         .status(200)
+         .json(rest);
+    } else {
+      const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
+      const hashedPassword = bcryptjs.hashSync(generatedPassword, 10);
+      const newUser = new User({userName: req.body.name, email: req.body.email, password: hashedPassword, avatar: req.body.photoURL});
+      await newUser.save();
+      const token = jwt.sign(newUser._id.toString(), process.env.JWT_SECRET_KEY);
+      const { password: pass, ...user } = newUser._doc;
+      res.cookie("access_token", token, {httpOnly: true})
+         .status(201)
+         .json(user);
+    }
+  } catch (error) {
+    console.log(error);
+    next(error);
   }
 }
