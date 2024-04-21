@@ -59,7 +59,6 @@ export const google = async (req, res, next) => {
          .json(user);
     }
   } catch (error) {
-    console.log(error);
     next(error);
   }
 }
