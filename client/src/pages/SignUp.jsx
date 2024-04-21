@@ -110,26 +110,26 @@ export default function SignUp() {
       </h1>
 
       <form className="flex flex-col">
-        {signupConfig.map((inputConfig) => {
+        {signupConfig.map((config) => {
           return (
-            <div className="h-70 relative" key={inputConfig.id}>
+            <div className="h-70 relative" key={config.id}>
               <input
-                type={inputConfig.type}
-                id={inputConfig.id}
-                placeholder={inputConfig.placeholder}
+                type={config.type}
+                id={config.id}
+                placeholder={config.placeholder}
                 className="border p-3 rounded-lg pl-10 focus:border-blue-600 focus:outline-none w-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 "
                 onChange={onInputHandler}
                 onBlur={onBlurHandler}
               />
               <img
-                src={inputConfig.imgSrc[0]}
-                alt="user-name-icon"
+                src={config.imgSrc[0]}
+                alt="icon"
                 className="h-5 w-5 absolute top-1/2 left-6 transform -translate-x-1/2 -translate-y-1/2 "
               />
-              {inputConfig.imgSrc[1] && (
+              {config.imgSrc[1] && (
                 <img
-                  src={inputConfig.imgSrc[1]}
-                  alt="user-name-icon"
+                  src={config.imgSrc[1]}
+                  alt="icon"
                   className="h-5 w-5 absolute top-1/2 right-3 transform -translate-x-1/2 -translate-y-1/2 "
                   onClick={setIcon}
                 />
