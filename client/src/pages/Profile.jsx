@@ -4,7 +4,7 @@ import UserInterface from "../utils/UserInterface.js";
 import Validator from "../utils/Validator.js";
 import CommonFunction from "../utils/CommonFunctions.js";
 import { useRef, useState, useEffect } from "react";
-import { getStorage, ref, uploadBytesResumable } from "firebase/storage";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { app } from "../utils/firebase.js";
 
 const ui = new UserInterface();
@@ -22,6 +22,9 @@ export default function Profile() {
   const { currentUser } = useSelector((state) => state.user);
   const fileRef = useRef(null);
   const [file, setFile] = useState(undefined);
+  const [progress, setProgress] = useState(0);
+  const [fileUploadError, setFileUploadError] = useState("");
+  const [formData, setFormData] = useState({});
 
   function setIcon(event) {
     ui.setIcon(
@@ -82,10 +85,21 @@ export default function Profile() {
     const storageRef = ref(storage, fileName);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
-    uploadTask.on("state_changed", (snapshot) => {
-      const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      console.log("Upload is: ", progress);
-    });
+    uploadTask.on("state_changed", 
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setProgress(Math.round(progress));
+      },
+      (error) => {
+        setFileUploadError(error.message);
+      },
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref)
+          .then((downloadURL) => {
+            console.log(downloadURL);
+          });
+      }
+    );
   }
 
   return (
