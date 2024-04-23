@@ -23,8 +23,8 @@ export default function Profile() {
   const fileRef = useRef(null);
   const [file, setFile] = useState(undefined);
   const [progress, setProgress] = useState(0);
-  const [fileUploadError, setFileUploadError] = useState("");
-  const [formData, setFormData] = useState({});
+  const [fileUploadError, setFileUploadError] = useState(false);
+  // const [formData, setFormData] = useState({});
 
   function setIcon(event) {
     ui.setIcon(
@@ -89,19 +89,23 @@ export default function Profile() {
       (snapshot) => {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         setProgress(Math.round(progress));
+        setFileUploadError(false);
       },
-      (error) => {
-        setFileUploadError(error.message);
+      () => { // error 
+        setFileUploadError(true);
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref)
           .then((downloadURL) => {
-            console.log(downloadURL);
+            // console.log("work");
+            // setFormData({...formData, avatar: downloadURL});
+            // console.log(formData);
           });
       }
     );
   }
-
+  console.log(fileUploadError);
+  console.log(progress);
   return (
     <div className="p-3 max-w-lg mx-auto">
       <form className="flex flex-col">
@@ -112,6 +116,13 @@ export default function Profile() {
           alt="profile"
           onClick={() => fileRef.current.click()}
         />
+        <p className="text-sm self-center">
+          {
+            fileUploadError ? <span className="text-red-600 font-semibold">ERROR: The image must be less than 2MB!</span> :
+            progress > 0 && progress < 100 ? <span className="text-slate-700 font-semibold">{`Uploading: ${progress}%`}</span> :
+            progress === 100 ? <span className="text-green-600 font-semibold">Image successfully uploaded!</span> : ""
+          }
+        </p>
         {profileConfig.map((config) => {
           return (
             <div className="h-70 relative" key={config.id}>
