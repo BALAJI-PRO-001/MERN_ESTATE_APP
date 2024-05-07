@@ -11,12 +11,6 @@ const ui = new UserInterface();
 const commonFunction = new CommonFunction();
 const validator = new Validator();
 
-/* firebase storage rules 
-    allow read;
-    allow write: if 
-    request.resource.size < 2 * 1024 * 1024 &&
-    request.resource.contentType.matches("images/.*	")
-*/
 
 export default function Profile() {
   const { currentUser } = useSelector((state) => state.user);
@@ -24,7 +18,8 @@ export default function Profile() {
   const [file, setFile] = useState(undefined);
   const [progress, setProgress] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
-  // const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({});
+ 
 
   function setIcon(event) {
     ui.setIcon(
@@ -97,24 +92,37 @@ export default function Profile() {
       () => {
         getDownloadURL(uploadTask.snapshot.ref)
           .then((downloadURL) => {
-            // console.log("work");
-            // setFormData({...formData, avatar: downloadURL});
-            // console.log(formData);
+            setFormData((formData) => {
+              return {...formData, avatar: downloadURL}
+            });
           });
       }
     );
   }
-  console.log(fileUploadError);
-  console.log(progress);
+
+
+  function onInputHandler(event) {
+    setFormData({
+      ...formData, 
+      [event.target.id]: event.target.value,
+    });
+  } 
+  
   return (
     <div className="p-3 max-w-lg mx-auto">
-      <form className="flex flex-col">
+      <form className="flex flex-col relative">
         <input type="file" ref={fileRef} hidden onChange={(event) => setFile(event.target.files[0])}/>
         <img
           className="rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-4"
-          src={currentUser.avatar}
+          src={ formData.avatar || currentUser.avatar}
           alt="profile"
           onClick={() => fileRef.current.click()}
+        />
+        <img 
+          className="h-14 w-14 absolute self-center top-10 ml-2"
+          src="/images/icons/image-upload-icon.png"
+          alt="icon"
+          hidden
         />
         <p className="text-sm self-center">
           {
@@ -131,7 +139,7 @@ export default function Profile() {
                 id={config.id}
                 placeholder={config.placeholder}
                 className="border p-3 rounded-lg pl-10 focus:border-green-600 focus:outline-none w-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 "
-                // onChange={onInputHandler}
+                onChange={onInputHandler}
                 onBlur={onBlurHandler}
               />
               <img
@@ -155,7 +163,7 @@ export default function Profile() {
           );
         })}
         <button
-          className="bg-slate-700 text-white p-3 mt-4 rounded-lg hover:opacity-95 disabled:opacity-80"
+          className="bg-slate-700 text-white p-3 mt-3 rounded-lg hover:opacity-95 disabled:opacity-80"
           style={{ fontFamily: "sans-serif" }}
           onClick={handleSubmit}
           // disabled={loading}
@@ -163,7 +171,7 @@ export default function Profile() {
           UPDATE
         </button>
       </form>
-      <div className="flex justify-between gap-3 mt-2">
+      <div className="flex justify-between gap-2 mt-2">
         <span className="font-semibold p-3 bg-red-600 rounded-lg text-white cursor-pointe w-1/2 text-center hover:opacity-90">
           Delete Account
         </span>
@@ -172,7 +180,7 @@ export default function Profile() {
         </span>
       </div>
       <button
-          className="bg-green-700 text-white p-3 mt-4 rounded-lg hover:opacity-95 disabled:opacity-80 w-full"
+          className="bg-green-700 text-white p-3 mt-2 rounded-lg hover:opacity-95 disabled:opacity-80 w-full"
           style={{ fontFamily: "sans-serif" }}
           // onClick={handleSubmit}
           // disabled={loading}
@@ -180,7 +188,7 @@ export default function Profile() {
           Create Listing
         </button>
       <button
-          className="bg-green-700 text-white p-3 mt-4 rounded-lg hover:opacity-95 disabled:opacity-80 w-full"
+          className="bg-green-700 text-white p-3 mt-2 rounded-lg hover:opacity-95 disabled:opacity-80 w-full"
           style={{ fontFamily: "sans-serif" }}
           // onClick={handleSubmit}
           // disabled={loading}
