@@ -12,7 +12,7 @@ export const signup = async (req, res, next) => {
   const newUser = new User({userName: userName, email: email, password: hashedPassword});
   try {
     await newUser.save();
-    res.status(201).json({"message": "New User Created ..."});
+    res.status(201).json({"message": "New User Created!"});
   } catch(error) {
     next(error);
   } 
@@ -62,6 +62,18 @@ export const google = async (req, res, next) => {
          .json(user);
     }
   } catch (error) {
+    next(error);
+  }
+}
+
+
+
+export const signOut = async (req, res, next) => {
+  try {
+    res.status(200).clearCookie("access_token").json({
+      message: "User has been logged out!"
+    });
+  } catch (error) { 
     next(error);
   }
 }
