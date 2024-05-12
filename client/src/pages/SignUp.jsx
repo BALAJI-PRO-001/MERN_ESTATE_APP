@@ -30,7 +30,7 @@ export default function SignUp() {
     );
   }
 
-  function onInputHandler(event) {
+  function onChangeHandler(event) {
     setFormData({
       ...formData, 
       [event.target.id]: event.target.value,
@@ -83,7 +83,7 @@ export default function SignUp() {
   }
 
 
-  function onBlurHandler(event) {
+  function onInputHandler(event) {
     const inputElement = event.target;
     if (inputElement.id === "userName") 
       validator.isvalidName(inputElement);
@@ -102,13 +102,7 @@ export default function SignUp() {
 
   return (
     <div className="p-3 max-w-lg mx-auto">
-      <h1
-        className="text-3xl text-center font-semibold my-7 mb-2"
-        style={{ fontFamily:"sans-serif"}}
-      >
-        Sign Up
-      </h1>
-
+      <h1 className="text-3xl text-center font-semibold my-7 mb-2">Sign Up</h1>
       <form className="flex flex-col">
         {signupConfig.map((config) => {
           return (
@@ -118,8 +112,8 @@ export default function SignUp() {
                 id={config.id}
                 placeholder={config.placeholder}
                 className="border p-3 rounded-lg pl-10 focus:border-green-600 focus:outline-none w-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 "
-                onChange={onInputHandler}
-                onBlur={onBlurHandler}
+                onChange={onChangeHandler}
+                onInput={onInputHandler}
               />
               <img
                 src={config.imgSrc[0]}
@@ -143,8 +137,7 @@ export default function SignUp() {
         })}
 
         <button
-          className="bg-slate-700 text-white p-3 mt-4 rounded-lg hover:opacity-95 disabled:opacity-80"
-          style={{ fontFamily: "sans-serif" }}
+          className="bg-slate-700 text-white p-3 mt-4 rounded-lg hover:opacity-95 disabled:opacity-80 tracking-wider font-semibold"
           onClick={handleSubmit}
           disabled={loading}
         >

@@ -24,6 +24,20 @@ export const updateUser = async (req, res, next) => {
     res.status(200).json(user);
 
   } catch (error) {
-    next(error);
+    next(errorHandler(409, "Duplicate key"));
   }
 } 
+
+
+
+export const deleteUser = async (req, res, next) => {
+  if (req.verifyedUserId !== req.params.id) 
+    return next(errorHandler(401, "Unauthorized"));
+
+  try {
+    await User.findByIdAndDelete(req.params.id);
+    res.status(200).clearCookie("access_token").json({message: "User has been deleted!"});
+  } catch (error) {
+    next(error);
+  }
+}

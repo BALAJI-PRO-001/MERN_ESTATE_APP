@@ -37,8 +37,7 @@ export default function OAuth() {
   return (
     <button 
       type="button"
-      className="bg-red-700 text-white p-3 mt-2 rounded-lg hover:opacity-95"
-      style={{ fontFamily: "sans-serif" }}
+      className="bg-red-700 text-white p-3 mt-2 rounded-lg hover:opacity-95 tracking-wider font-semibold"
       onClick={handleGoogleAuth}
     >
       CONTINUE WITH GOOGLE
