@@ -278,14 +278,14 @@ export default function Profile() {
         </span>
       </div>
       <button
-          className="bg-green-700 text-white p-3 mt-2 rounded-lg hover:opacity-95 disabled:opacity-80 w-full tracking-wider"
+          className="font-semibold bg-green-700 text-white p-3 mt-2 rounded-lg hover:opacity-95 disabled:opacity-80 w-full tracking-wider"
           // onClick={handleSubmit}
           // disabled={loading}
         >
           Create Listing
         </button>
       <button
-          className="bg-green-700 text-white p-3 mt-2 rounded-lg hover:opacity-95 disabled:opacity-80 w-full tracking-wider"
+          className="font-semibold bg-green-700 text-white p-3 mt-2 rounded-lg hover:opacity-95 disabled:opacity-80 w-full tracking-wider"
           // onClick={handleSubmit}
           // disabled={loading}
         >
