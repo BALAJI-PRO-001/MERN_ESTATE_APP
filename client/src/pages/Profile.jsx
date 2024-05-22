@@ -203,6 +203,7 @@ export default function Profile() {
   
   return (
     <div className="p-3 max-w-lg mx-auto">
+      <h1 className="text-center font-semibold text-2xl text-slate-700">Account Information</h1>
       <form className="flex flex-col relative">
         <input type="file" ref={fileRef} hidden onChange={(event) => setFile(event.target.files[0])}/>
         <img

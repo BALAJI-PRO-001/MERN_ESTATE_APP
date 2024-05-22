@@ -129,7 +129,7 @@ export default function SignUp() {
                 />
               )}
               <p 
-                className="text-sm text-red-600 font-semibold absolute top-12 transform-translate-x-1/2" 
+                className="text-sm text-xxs text-red-600 font-semibold absolute top-12 transform-translate-x-1/2" 
                 style={{marginTop: "10px"}}
               ></p>
             </div>
