@@ -32,9 +32,7 @@ export default function CreateListing() {
         },
         () => {
           getDownloadURL(uploadTask.snapshot.ref)
-            .then((downloadURL) => {
-                                                     
-                                                                                                                                                                                                                                                                                });
+            .then((downloadURL) => resolve(downloadURL));
         }
       );
     });
@@ -49,7 +47,7 @@ export default function CreateListing() {
             id="name"
             type="text"
             placeholder="Name . . . ."
-            className="border p-3 rounded-lg outline-none focus:border-green-600 focus:outline-none"
+            className="border border-gray-300 p-3 rounded-lg outline-none focus:border-green-600 focus:outline-none"
             maxLength="65"
             minLength="10"
             required
@@ -58,14 +56,14 @@ export default function CreateListing() {
             id="description"
             type="text"
             placeholder="Description . . . ."
-            className="border p-3 rounded-lg outline-none focus:border-green-600 focus:outline-none"
+            className="border border-gray-300 p-3 rounded-lg outline-none focus:border-green-600 focus:outline-none"
             required
           ></textarea>
           <textarea
             id="address"
             type="text"
             placeholder="Address . . . ."
-            className="border p-3 rounded-lg outline-none focus:border-green-600 focus:outline-none"
+            className="border border-gray-300 p-3 rounded-lg outline-none focus:border-green-600 focus:outline-none"
             required
           ></textarea>
 
@@ -98,7 +96,7 @@ export default function CreateListing() {
                 type="number" 
                 id="bedrooms" 
                 min="1" max="10" required 
-                className="p-3 border rounded-lg focus:outline-none focus:border-green-600"
+                className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600"
               />
               <p>Beds</p>
             </div>
@@ -107,7 +105,7 @@ export default function CreateListing() {
                 type="number" 
                 id="bathrooms" 
                 min="1" max="10" required 
-                className="p-3 border rounded-lg focus:outline-none focus:border-green-600"
+                className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600"
               />
               <p>Bathrooms</p>
             </div>
@@ -116,7 +114,7 @@ export default function CreateListing() {
                 type="number" 
                 id="regular-price" 
                 min="50" required 
-                className="p-3 border rounded-lg focus:outline-none focus:border-green-600"
+                className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600"
               />
               <div className="flex flex-col text-center">
                 <p>Regular price</p> 
@@ -128,7 +126,7 @@ export default function CreateListing() {
                 type="number" 
                 id="discounted-price" 
                 min="50" required 
-                className="p-3 border rounded-lg focus:outline-none focus:border-green-600"
+                className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600"
               />
               <div className="flex flex-col text-center">
                 <p>Discounted price</p> 

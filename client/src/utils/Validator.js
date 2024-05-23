@@ -34,7 +34,7 @@ export default class Validator {
         return false;
       }
 
-      ui.setBorder(inputElement, ui.BORDER_1PX_TRANSPARENT);
+      ui.setBorder(inputElement, ui.BORDER_1PX_GRAY);
       ui.setMessage(errorElement, "");
       return true;
       
@@ -63,7 +63,7 @@ export default class Validator {
         return false;
       }
 
-      ui.setBorder(inputElement, ui.BORDER_1PX_TRANSPARENT);
+      ui.setBorder(inputElement, ui.BORDER_1PX_GRAY);
       ui.setMessage(errorElement, "");
       return true;
 
@@ -108,7 +108,7 @@ export default class Validator {
         return false;
       }
 
-      ui.setBorder(inputElement, ui.BORDER_1PX_TRANSPARENT);
+      ui.setBorder(inputElement, ui.BORDER_1PX_GRAY);
       ui.setMessage(errorElement, "");
       return true;
 
@@ -135,7 +135,7 @@ export default class Validator {
         return false;
       }
 
-      ui.setBorder(inputElement, ui.BORDER_1PX_TRANSPARENT);
+      ui.setBorder(inputElement, ui.BORDER_1PX_GRAY);
       ui.setMessage(errorElement, "");
       return true;
 

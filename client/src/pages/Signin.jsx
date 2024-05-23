@@ -89,7 +89,7 @@ export default function Signin() {
 
   function onInputHandler(event) {
     const inputElement = event.target;
-
+ 
     if (inputElement.id === "email")
       validator.isvalidEmail(inputElement);
 
@@ -110,7 +110,7 @@ export default function Signin() {
                 type={config.type}
                 id={config.id}
                 placeholder={config.placeholder}
-                className="border p-3 rounded-lg pl-10 focus:border-green-600 focus:outline-none w-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 "
+                className="border border-gray-300 p-3 rounded-lg pl-10 focus:border-green-600 focus:outline-none w-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 tracking-wider"
                 onChange={onChangeHandler}
                 onInput={onInputHandler}
               />

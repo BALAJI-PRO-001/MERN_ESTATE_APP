@@ -1,7 +1,7 @@
 export default class UserInterFace {
 
   BORDER_1PX_RED = "1px solid red";
-  BORDER_1PX_TRANSPARENT = "1px solid transparent";
+  BORDER_1PX_GRAY = "1px solid rgba(128, 128, 128, 0.358)";
 
   setIcon(imgElement, oldImgPath, newImgPath) {
     if (imgElement) {
