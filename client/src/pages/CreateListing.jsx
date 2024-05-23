@@ -1,7 +1,48 @@
+import { useState } from "react";
+import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
+import { app } from "../utils/firebase.js";
+
 export default function CreateListing() {
+  const [ imageFiles, setImageFiles ] = useState([]);
+  const [ progress, setProgress  ] = useState(0);
+
+  async function handleImageUpload() {
+    if (imageFiles.length > 0 && imageFiles.length < 7) {
+      const promises = [];
+      for (let imageFile of imageFiles) {
+        promises.push(storeImage(imageFile));
+      }
+    }
+  }
+
+  async function storeImage(imageFile) {
+    return new Promise((resolve, reject) => {
+      const storage = getStorage(app);
+      const fileName = new Date().getTime() + imageFile.name;
+      const storageRef = ref(storage, fileName);
+      const uploadTask = uploadBytesResumable(storageRef, imageFile);
+
+      uploadTask.on("state_changed",
+        (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          setProgress(Math.floor(progress));
+        }, 
+        (error) => { // error
+          reject(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref)
+            .then((downloadURL) => {
+                                                     
+                                                                                                                                                                                                                                                                                });
+        }
+      );
+    });
+  }
+
   return (
     <main className="p-3 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-semibold text-center my-7">Create a Listing</h1>
+      <h1 className="text-3xl font-bold text-slate-700 text-center my-7">Create a Listing</h1>
       <form className="flex flex-col sm:flex-row gap-4">
         <div className="flex flex-col gap-4 flex-1">
           <input
@@ -106,13 +147,16 @@ export default function CreateListing() {
           <div className="flex gap-3">
             <input 
               type="file" 
-              id="images" 
+              id="images"  
               accept="image/*" 
               multiple 
               className="p-3 rounded w-full border border-gray-500"
+              onChange={(event) => setImageFiles(event.target.files)}
             />
             <button 
+              type="button"
               className="uppercase rounded-lg p-3 bg-green-600 text-white font-semibold hover:shadow-lg hover:opacity-85 disabled:opacity-70 tracking-wider" 
+              onClick={handleImageUpload}
             >
               Upload
             </button>

@@ -5,6 +5,7 @@ import Validator from "../utils/Validator.js";
 import CommonFunction from "../utils/CommonFunctions.js";
 import { useRef, useState, useEffect } from "react";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { Link } from "react-router-dom";
 import { app } from "../utils/firebase.js";
 import { 
   updateUserStart, 
@@ -98,7 +99,7 @@ export default function Profile() {
         }
 
         dispatch(updateUserSuccess(data));
-        setMessage("Profile updated successfully")
+        setMessage("Profile updated successfully") 
         setTimeout(() => {
           setMessage("");
         }, 2000);
@@ -190,7 +191,7 @@ export default function Profile() {
         }, 2000);
       }
     );
-  }
+  } 
 
 
   function onChangeHandler(event) {
@@ -203,7 +204,7 @@ export default function Profile() {
   
   return (
     <div className="p-3 max-w-lg mx-auto">
-      <h1 className="text-center font-semibold text-2xl text-slate-700">Account Information</h1>
+      <h1 className="text-center font-bold text-2xl mt-2 text-slate-700">Account Information</h1>
       <form className="flex flex-col relative">
         <input type="file" ref={fileRef} hidden onChange={(event) => setFile(event.target.files[0])}/>
         <img
@@ -250,7 +251,7 @@ export default function Profile() {
                 />
               )}
               <p
-                className="text-sm text-red-600 font-semibold absolute top-12 transform-translate-x-1/2"
+                className="text-sm text-xxs text-red-600 font-semibold absolute top-12 transform-translate-x-1/2"
                 style={{ marginTop: "10px" }}
               ></p>
             </div>
@@ -278,20 +279,22 @@ export default function Profile() {
           Sign out
         </span>
       </div>
-      <button
-          className="font-semibold bg-green-700 text-white p-3 mt-2 rounded-lg hover:opacity-95 disabled:opacity-80 w-full tracking-wider"
-          // onClick={handleSubmit}
-          // disabled={loading}
-        >
-          Create Listing
+      <Link to="/create-listing">
+        <button
+            className="font-semibold bg-green-700 text-white p-3 mt-2 rounded-lg hover:opacity-95 disabled:opacity-80 w-full tracking-wider"
+            // onClick={handleSubmit}
+            // disabled={loading}
+          >
+            Create Listing
         </button>
+      </Link>
       <button
           className="font-semibold bg-green-700 text-white p-3 mt-2 rounded-lg hover:opacity-95 disabled:opacity-80 w-full tracking-wider"
           // onClick={handleSubmit}
           // disabled={loading}
         >
           Show Listings
-        </button>
+      </button>
     </div>
   );
 }
