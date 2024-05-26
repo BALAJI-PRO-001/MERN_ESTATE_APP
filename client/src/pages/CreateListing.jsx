@@ -4,14 +4,33 @@ import { app } from "../utils/firebase.js";
 
 export default function CreateListing() {
   const [ imageFiles, setImageFiles ] = useState([]);
-  const [ progress, setProgress  ] = useState(0);
+  const [ imgUploadMessage, setImgUploadMessage ] = useState("");
+  const [ formData, setFormData ] = useState({imageUrls: []});
+
 
   async function handleImageUpload() {
+    if (imageFiles.length == 0) {
+      setImgUploadMessage("Please select at least one image and a maximum of six images . . . .");
+      return;
+    }
+
     if (imageFiles.length > 0 && imageFiles.length < 7) {
       const promises = [];
       for (let imageFile of imageFiles) {
         promises.push(storeImage(imageFile));
       }
+
+      Promise.all(promises)
+        .then((urls) => {
+          setImgUploadMessage("Finished . . . .");
+          setFormData((preFormData) => {
+            return { ...preFormData, imageUrls: preFormData.imageUrls.concat(urls)};
+          });
+        })
+        .catch(() => setImgUploadMessage("ERROR: All image must be less than 2MB!"));
+    } 
+    else {
+      setImgUploadMessage("Please select exactly six images . . . .");
     }
   }
 
@@ -24,8 +43,8 @@ export default function CreateListing() {
 
       uploadTask.on("state_changed",
         (snapshot) => {
-          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          setProgress(Math.floor(progress));
+          const progress = (Math.floor((snapshot.bytesTransferred / snapshot.totalBytes) * 100));
+          setImgUploadMessage(`Uploading: ${progress}%`);
         }, 
         (error) => { // error
           reject(error);
@@ -155,10 +174,14 @@ export default function CreateListing() {
               type="button"
               className="uppercase rounded-lg p-3 bg-green-600 text-white font-semibold hover:shadow-lg hover:opacity-85 disabled:opacity-70 tracking-wider" 
               onClick={handleImageUpload}
+              disabled={imgUploadMessage.includes("Uploading")}
             >
               Upload
             </button>
           </div>
+          {
+            imgUploadMessage.includes("ERROR") ? <span className="text-red-600 font-semibold">{imgUploadMessage}</span> : <span className="text-slate-600 font-semibold">{imgUploadMessage}</span>
+          }
           <button className="p-3 bg-slate-700 rounded-lg text-white tracking-wider font-semibold uppercase hover:opacity-85">Create Listing</button>
         </div>
 
