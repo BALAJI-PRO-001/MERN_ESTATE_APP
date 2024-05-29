@@ -7,7 +7,6 @@ export default function CreateListing() {
   const [ imgUploadMessage, setImgUploadMessage ] = useState("");
   const [ formData, setFormData ] = useState({imageUrls: []});
 
-
   async function handleImageUpload() {
     if (imageFiles.length == 0) {
       setImgUploadMessage("Please select at least one image and a maximum of six images . . . .");
@@ -55,6 +54,10 @@ export default function CreateListing() {
         }
       );
     });
+  }
+
+  function handleRemoveImage() {
+    console.log(formData.imageUrls.filter((skip, index) => index == 0));
   }
 
   return (
@@ -181,6 +184,26 @@ export default function CreateListing() {
           </div>
           {
             imgUploadMessage.includes("ERROR") ? <span className="text-red-600 font-semibold">{imgUploadMessage}</span> : <span className="text-slate-600 font-semibold">{imgUploadMessage}</span>
+          }
+          {
+            formData.imageUrls.map((url, index) => {
+              return (
+                <div key={url} className="flex p-3 border border-gray-300 rounded-lg justify-between items-center">
+                  <img 
+                    src={url}
+                    alt="Loading"
+                    className="h-25 w-20 object-contain rounded-lg"
+                  />
+                  <button 
+                    type="button"
+                    className="h-10 px-2 bg-red-600 text-white font-semibold tracking-wider rounded-lg uppercase hover:opacity-75"
+                    onClick={handleRemoveImage}
+                  >
+                    Delete
+                  </button>
+                </div>
+              );
+            })
           }
           <button className="p-3 bg-slate-700 rounded-lg text-white tracking-wider font-semibold uppercase hover:opacity-85">Create Listing</button>
         </div>

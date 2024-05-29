@@ -204,7 +204,7 @@ export default function Profile() {
   
   return (
     <div className="p-3 max-w-lg mx-auto">
-      <h1 className="text-center font-bold text-2xl mt-2 text-slate-700">Account Information</h1>
+      <h1 className="text-center font-bold text-2xl mt-2" >Account Information</h1>
       <form className="flex flex-col relative">
         <input type="file" ref={fileRef} hidden onChange={(event) => setFile(event.target.files[0])}/>
         <img
@@ -267,13 +267,13 @@ export default function Profile() {
       </form>
       <div className="flex justify-between gap-2 mt-2">
         <span 
-          className="font-semibold p-3 bg-red-600 rounded-lg text-white cursor-pointe w-1/2 text-center hover:opacity-90 tracking-wider"
+          className="font-semibold p-3 bg-red-600 rounded-lg text-white cursor-pointe w-1/2 text-center hover:opacity-90"
           onClick={handleDeleteUser}
           >
             Delete Account
         </span>
         <span 
-          className="font-semibold p-3 bg-red-600 rounded-lg text-white cursor-pointer w-1/2 text-center hover:opacity-90 tracking-wider"
+          className="font-semibold p-3 bg-red-600 rounded-lg text-white cursor-pointer w-1/2 text-center hover:opacity-90"
           onClick={handleSignOut}
         >
           Sign out
@@ -281,7 +281,7 @@ export default function Profile() {
       </div>
       <Link to="/create-listing">
         <button
-            className="font-semibold bg-green-700 text-white p-3 mt-2 rounded-lg hover:opacity-95 disabled:opacity-80 w-full tracking-wider"
+            className="font-semibold bg-green-700 text-white p-3 mt-2 rounded-lg hover:opacity-95 disabled:opacity-80 w-full"
             // onClick={handleSubmit}
             // disabled={loading}
           >
@@ -289,7 +289,7 @@ export default function Profile() {
         </button>
       </Link>
       <button
-          className="font-semibold bg-green-700 text-white p-3 mt-2 rounded-lg hover:opacity-95 disabled:opacity-80 w-full tracking-wider"
+          className="font-semibold bg-green-700 text-white p-3 mt-2 rounded-lg hover:opacity-95 disabled:opacity-80 w-full"
           // onClick={handleSubmit}
           // disabled={loading}
         >
