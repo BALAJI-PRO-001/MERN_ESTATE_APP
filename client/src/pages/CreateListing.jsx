@@ -7,13 +7,22 @@ export default function CreateListing() {
   const [ imgUploadMessage, setImgUploadMessage ] = useState("");
   const [ formData, setFormData ] = useState({imageUrls: []});
 
+  console.log(imageFiles);
+
   async function handleImageUpload() {
     if (imageFiles.length == 0) {
       setImgUploadMessage("Please select at least one image and a maximum of six images . . . .");
       return;
     }
 
-    if (imageFiles.length > 0 && imageFiles.length < 7) {
+    for (let imageFile of imageFiles) {
+      if ((imageFile.size / 1024) > 2048) {
+        setImgUploadMessage(`Error message: ${imageFile.name} file size must be less than 2MB!`);
+        return;
+      }
+    }
+
+    if (imageFiles.length > 0 && imageFiles.length + formData.imageUrls.length < 7) {
       const promises = [];
       for (let imageFile of imageFiles) {
         promises.push(storeImage(imageFile));
@@ -26,10 +35,10 @@ export default function CreateListing() {
             return { ...preFormData, imageUrls: preFormData.imageUrls.concat(urls)};
           });
         })
-        .catch(() => setImgUploadMessage("ERROR: All image must be less than 2MB!"));
+        .catch(() => setImgUploadMessage("Error: All image must be less than 2MB!"));
     } 
     else {
-      setImgUploadMessage("Please select exactly six images . . . .");
+      setImgUploadMessage("You can only upload 6 images per listing . . . .");
     }
   }
 
@@ -56,8 +65,10 @@ export default function CreateListing() {
     });
   }
 
-  function handleRemoveImage() {
-    console.log(formData.imageUrls.filter((skip, index) => index == 0));
+  function handleRemoveImage(imgToDeleteIndex) {
+    setFormData((preFormData) => {
+      return { ...preFormData, imageUrls: preFormData.imageUrls.filter((_, index) => index !== imgToDeleteIndex)};
+    });
   }
 
   return (
@@ -183,7 +194,7 @@ export default function CreateListing() {
             </button>
           </div>
           {
-            imgUploadMessage.includes("ERROR") ? <span className="text-red-600 font-semibold">{imgUploadMessage}</span> : <span className="text-slate-600 font-semibold">{imgUploadMessage}</span>
+            imgUploadMessage.includes("Error") ? <span className="text-red-600 font-semibold">{imgUploadMessage}</span> : <span className="text-slate-600 font-semibold">{imgUploadMessage}</span>
           }
           {
             formData.imageUrls.map((url, index) => {
@@ -197,7 +208,7 @@ export default function CreateListing() {
                   <button 
                     type="button"
                     className="h-10 px-2 bg-red-600 text-white font-semibold tracking-wider rounded-lg uppercase hover:opacity-75"
-                    onClick={handleRemoveImage}
+                    onClick={() => handleRemoveImage(index)}
                   >
                     Delete
                   </button>
