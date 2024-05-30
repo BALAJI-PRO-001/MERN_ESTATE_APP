@@ -5,9 +5,20 @@ import { app } from "../utils/firebase.js";
 export default function CreateListing() {
   const [ imageFiles, setImageFiles ] = useState([]);
   const [ imgUploadMessage, setImgUploadMessage ] = useState("");
-  const [ formData, setFormData ] = useState({imageUrls: []});
-
-  console.log(imageFiles);
+  const [ formData, setFormData ] = useState({
+    imageUrls: [],
+    name: "",
+    description: "",
+    address: "",
+    type: 'rent',
+    bedrooms: 1,
+    bathrooms: 1,
+    regularPrice: 50,
+    discountPrice: 50,
+    offer: false,
+    parking: false,
+    furnished: false,
+  });
 
   async function handleImageUpload() {
     if (imageFiles.length == 0) {
@@ -71,6 +82,39 @@ export default function CreateListing() {
     });
   }
 
+
+  function onChangeEventHandler(event) {
+    if (event.target.id === "sale" || event.target.id == "rent") {
+      setFormData((preFormData) => {
+        return { ...preFormData, type: event.target.id};
+      });
+    }
+
+    if (
+      event.target.id === "parking" ||
+      event.target.id === "furnished" ||
+      event.target.id === "offer" 
+    ) {
+      setFormData((preFormData) => {
+        return { ...preFormData, [event.target.id]: event.target.checked};
+      });
+    }
+
+    if (
+      event.target.type === "text" ||
+      event.target.type === "textarea" ||
+      event.target.type === "number"
+    ) {
+      setFormData((preFormData) => {
+        return { ...preFormData, [event.target.id]: event.target.value};
+      });
+    }
+  }
+
+  async function handleSubmit(event) {
+    event.preventDefault();
+  }
+
   return (
     <main className="p-3 max-w-4xl mx-auto">
       <h1 className="text-3xl font-bold text-slate-700 text-center my-7">Create a Listing</h1>
@@ -80,45 +124,81 @@ export default function CreateListing() {
             id="name"
             type="text"
             placeholder="Name . . . ."
-            className="border border-gray-300 p-3 rounded-lg outline-none focus:border-green-600 focus:outline-none"
+            className="border border-gray-300 p-3 rounded-lg outline-none focus:border-green-600 focus:outline-none font-semibold"
             maxLength="65"
             minLength="10"
             required
+            value={formData.name}
+            onChange={onChangeEventHandler}
           />
           <textarea
             id="description"
             type="text"
             placeholder="Description . . . ."
-            className="border border-gray-300 p-3 rounded-lg outline-none focus:border-green-600 focus:outline-none"
+            className="border border-gray-300 p-3 rounded-lg outline-none focus:border-green-600 focus:outline-none font-semibold"
             required
+            value={formData.description}
+            onChange={onChangeEventHandler}
           ></textarea>
           <textarea
             id="address"
             type="text"
             placeholder="Address . . . ."
-            className="border border-gray-300 p-3 rounded-lg outline-none focus:border-green-600 focus:outline-none"
+            className="border border-gray-300 p-3 rounded-lg outline-none focus:border-green-600 focus:outline-none font-semibold"
             required
+            value={formData.address}
+            onChange={onChangeEventHandler}
           ></textarea>
 
           <div className="flex flex-row flex-wrap gap-4">
             <div className="flex gap-1">
-              <input type="checkbox" id="sale" className="w-5"/>
+              <input 
+                type="checkbox" 
+                id="sale" 
+                className="w-5"
+                checked={formData.type === "sale"}
+                onChange={onChangeEventHandler}
+              />
               <span>Sell</span>
             </div>
             <div className="flex gap-1">
-              <input type="checkbox" id="rent" className="w-5"/>
+              <input 
+                type="checkbox" 
+                id="rent" 
+                className="w-5"
+                checked={formData.type === "rent"}
+                onChange={onChangeEventHandler}
+              />
               <span>Rent</span>
             </div>
             <div className="flex gap-1">
-              <input type="checkbox" id="parking" className="w-5"/>
+              <input 
+                type="checkbox" 
+                id="parking" 
+                className="w-5"
+                value={formData.parking}
+                onChange={onChangeEventHandler}
+              />
               <span>Parking spot</span>
             </div>
             <div className="flex gap-1">
-              <input type="checkbox" id="furnished" className="w-5"/>
+              <input 
+                type="checkbox" 
+                id="furnished" 
+                className="w-5"
+                value={formData.furnished}
+                onChange={onChangeEventHandler}
+              />
               <span>Furnished</span>
             </div>
             <div className="flex gap-1">
-              <input type="checkbox" id="offer" className="w-5"/>
+              <input 
+                type="checkbox" 
+                id="offer" 
+                className="w-5"
+                value={formData.offer}
+                onChange={onChangeEventHandler}
+              />
               <span>Offer</span>
             </div>
           </div>
@@ -129,7 +209,9 @@ export default function CreateListing() {
                 type="number" 
                 id="bedrooms" 
                 min="1" max="10" required 
-                className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600"
+                className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600 font-semibold w-24"
+                value={formData.bedrooms}
+                onChange={onChangeEventHandler}
               />
               <p>Beds</p>
             </div>
@@ -138,16 +220,20 @@ export default function CreateListing() {
                 type="number" 
                 id="bathrooms" 
                 min="1" max="10" required 
-                className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600"
+                className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600 font-semibold  w-24"
+                value={formData.bathrooms}
+                onChange={onChangeEventHandler}
               />
               <p>Bathrooms</p>
             </div>
             <div className="flex items-center gap-1">
               <input 
                 type="number" 
-                id="regular-price" 
+                id="regularPrice" 
                 min="50" required 
-                className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600"
+                className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600 font-semibold  w-24"
+                value={formData.regularPrice}
+                onChange={onChangeEventHandler}
               />
               <div className="flex flex-col text-center">
                 <p>Regular price</p> 
@@ -157,9 +243,11 @@ export default function CreateListing() {
             <div className="flex items-center gap-1">
               <input 
                 type="number" 
-                id="discounted-price" 
+                id="discountPrice" 
                 min="50" required 
-                className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600"
+                className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600 font-semibold  w-24"
+                value={formData.discountPrice}
+                onChange={onChangeEventHandler}
               />
               <div className="flex flex-col text-center">
                 <p>Discounted price</p> 
@@ -216,7 +304,12 @@ export default function CreateListing() {
               );
             })
           }
-          <button className="p-3 bg-slate-700 rounded-lg text-white tracking-wider font-semibold uppercase hover:opacity-85">Create Listing</button>
+          <button 
+            className="p-3 bg-slate-700 rounded-lg text-white tracking-wider font-semibold uppercase hover:opacity-85"
+            onClick={handleSubmit}
+          >
+            Create Listing
+          </button>
         </div>
 
       </form>
