@@ -164,6 +164,11 @@ export default function Profile() {
 
 
   function handleFileUpload(file) {
+    if ((file.size / 1024) > 2048) {
+      setFileUploadError(true);
+      return;
+    }
+
     const storage = getStorage(app);
     const fileName = new Date().getTime() + file.name;
     const storageRef = ref(storage, fileName);
@@ -204,7 +209,6 @@ export default function Profile() {
   
   return (
     <div className="p-3 max-w-lg mx-auto">
-      <h1 className="text-center font-bold text-2xl mt-2" >Account Information</h1>
       <form className="flex flex-col relative">
         <input type="file" ref={fileRef} hidden onChange={(event) => setFile(event.target.files[0])}/>
         <img
@@ -229,7 +233,7 @@ export default function Profile() {
                 type={config.type}
                 id={config.id}
                 placeholder={config.placeholder}
-                className="border border-gray-300 p-3 rounded-lg pl-10 focus:border-green-600 focus:outline-none w-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 tracking-wider"
+                className="border border-gray-300 p-3 rounded-lg pl-10 focus:border-green-600 focus:outline-none w-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
                 onChange={onChangeHandler}
                 onInput={onInputHandler}
                 defaultValue={
