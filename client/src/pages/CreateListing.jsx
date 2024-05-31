@@ -1,10 +1,16 @@
 import { useState } from "react";
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
 import { app } from "../utils/firebase.js";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateListing() {
+  const { currentUser } = useSelector((state) => state.user);
+  const navigate = useNavigate();
   const [ imageFiles, setImageFiles ] = useState([]);
   const [ imgUploadMessage, setImgUploadMessage ] = useState("");
+  const [ message, setMessage ] = useState("");
+  const [ loading, setLoading ] = useState(false);
   const [ formData, setFormData ] = useState({
     imageUrls: [],
     name: "",
@@ -20,6 +26,7 @@ export default function CreateListing() {
     furnished: false,
   });
 
+  
   async function handleImageUpload() {
     if (imageFiles.length == 0) {
       setImgUploadMessage("Please select at least one image and a maximum of six images . . . .");
@@ -113,6 +120,39 @@ export default function CreateListing() {
 
   async function handleSubmit(event) {
     event.preventDefault();
+    
+    try {
+      if (formData.imageUrls.length < 1) {
+        setImgUploadMessage("Error: You must upload at least one image . . . .");
+        return;
+      }
+
+      if (+formData.regularPrice <= +formData.discountPrice) {
+        setMessage("Error: Discount price must be lower than regular price . . . .");
+        return;
+      }
+
+      setLoading(true);
+      const res = await fetch("/api/listing/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ ...formData, userRef: currentUser._id})
+      });
+
+      const data = await res.json();
+      setLoading(false);
+
+      if (data.success === false) {
+        return setMessage("Error" + data.message);
+      }
+
+      navigate("/home");
+    } catch (error) {
+      setLoading(false);
+      setMessage("Error" + error.message);
+    }
   }
 
   return (
@@ -258,12 +298,12 @@ export default function CreateListing() {
 
         </div>
 
-        <div className="flex flex-col flex-1 gap-3">
+        <div className="flex flex-col flex-1 gap-2">
           <p className="font-semibold">Images: 
             <span className="font-normal text-gray-600 pl-2"> The first image will be the cover (max 6)</span>
           </p>
 
-          <div className="flex gap-3">
+          <div className="flex gap-3 m-1">
             <input 
               type="file" 
               id="images"  
@@ -304,11 +344,16 @@ export default function CreateListing() {
               );
             })
           }
+
+          {
+            message.includes("Error") && <span className="text-red-600 font-semibold">{message}</span>
+          }
           <button 
-            className="p-3 bg-slate-700 rounded-lg text-white tracking-wider font-semibold uppercase hover:opacity-85"
+            className="p-3 bg-slate-700 rounded-lg text-white tracking-wider font-semibold uppercase hover:opacity-85 disabled:opacity-85"
             onClick={handleSubmit}
+            disabled={loading}
           >
-            Create Listing
+            { loading ? "Loading . . ." : "Create Listing" }
           </button>
         </div>
 
