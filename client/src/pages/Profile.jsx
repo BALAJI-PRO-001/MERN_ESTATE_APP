@@ -4,10 +4,10 @@ import UserInterface from "../utils/UserInterface.js";
 import Validator from "../utils/Validator.js";
 import CommonFunction from "../utils/CommonFunctions.js";
 import { useRef, useState, useEffect } from "react";
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL, list } from "firebase/storage";
 import { Link } from "react-router-dom";
 import { app } from "../utils/firebase.js";
-import { 
+import userSlice, { 
   updateUserStart, 
   updateUserSuccess, 
   updateUserFailure,
@@ -38,6 +38,8 @@ export default function Profile() {
   const [message, setMessage] = useState("");
   const [errMessage, setErrMessage] = useState("");
   const [imgUploadMessage, setImgUploadMessage] = useState("");
+  const [showLisingsMessage, setShowListingsMessage] = useState("");
+  const [userListings, setUserListings] = useState([]);
 
 
   function setIcon(event) {
@@ -206,6 +208,29 @@ export default function Profile() {
     });
   } 
 
+
+  async function handleShowListings() {
+    try {
+      setShowListingsMessage("");
+      const res = await fetch(`/api/user/listings/${currentUser._id}`, {method: "GET"});
+      const data = await res.json();
+      
+      if (data.success === false) {
+        setShowListingsMessage("Error: " + data.message);
+        return;
+      }
+
+      if (data.listings.length <= 0) {
+        setShowListingsMessage("There is no listing available . . . .");
+        return;
+      }
+
+      setUserListings(data.listings);
+
+    } catch (error) {
+      setShowListingsMessage("Error" + error.message);
+    }
+  }
   
   return (
     <div className="p-3 max-w-lg mx-auto">
@@ -284,21 +309,53 @@ export default function Profile() {
         </span>
       </div>
       <Link to="/create-listing">
-        <button
-            className="font-semibold bg-green-700 text-white p-3 mt-2 rounded-lg hover:opacity-95 disabled:opacity-80 w-full"
-            // onClick={handleSubmit}
-            // disabled={loading}
-          >
-            Create Listing
-        </button>
+        <button className="font-semibold bg-green-700 text-white p-3 mt-2 rounded-lg hover:opacity-95 disabled:opacity-80 w-full">Create Listing</button>
       </Link>
       <button
           className="font-semibold bg-green-700 text-white p-3 mt-2 rounded-lg hover:opacity-95 disabled:opacity-80 w-full"
-          // onClick={handleSubmit}
+          onClick={handleShowListings}
           // disabled={loading}
         >
           Show Listings
       </button>
+      {
+        showLisingsMessage.includes("Error") ? <span className="text-red-600 font-semibold text-1xl block mt-1 text-center">{showLisingsMessage}</span> :
+                                               <span className="text-slate-600 font-semibold text-1xl block mt-1 text-center">{showLisingsMessage}</span>
+      }
+      {
+        userListings.length > 0 && <p className="text-slate-600 m-5 font-semibold text-center text-2xl">Your Listings</p>
+      }
+      {
+        userListings.map((listing, index) => {
+          return (
+            <div className="mt-2" key={index}>
+              <div key={index} className="flex p-3 border border-gray-300 rounded-lg justify-between items-center">
+                <img 
+                  src={listing.imageUrls[0]}
+                  alt="Loading"
+                  className="h-25 w-20 object-contain rounded-lg"
+                />
+                <div className="flex gap-3">
+                  <button 
+                    type="button"
+                    className="h-10 px-5 bg-green-600 text-white font-semibold tracking-wider rounded-lg uppercase hover:opacity-75"
+                    // onClick={() => handleRemoveImage(index)}
+                  >
+                    Edit
+                  </button>
+                  <button 
+                    type="button"
+                    className="h-10 px-2 bg-red-600 text-white font-semibold tracking-wider rounded-lg uppercase hover:opacity-75"
+                    // onClick={() => handleRemoveImage(index)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          );
+        })
+      }
     </div>
   );
 }
