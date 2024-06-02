@@ -141,6 +141,7 @@ export default function CreateListing() {
       });
 
       const data = await res.json();
+      console.log(data);
       setLoading(false);
 
       if (data.success === false) {
@@ -149,7 +150,7 @@ export default function CreateListing() {
         else 
           return setMessage("Error: " + data.message);
       }
-      navigate("/home");     
+      navigate(`/listing/${data.listing.userRef}`);     
     } catch (error) {
       setLoading(false);
       setMessage("Error: " + error.message);
@@ -327,7 +328,7 @@ export default function CreateListing() {
             </button>
           </div>
           {
-            imgUploadMessage.includes("Error") ? <span className="text-red-600 font-semibold">{imgUploadMessage}</span> : <span className="text-slate-600 font-semibold">{imgUploadMessage}</span>
+            imgUploadMessage.includes("Error") ? <span className="text-red-600 text-xxs font-semibold">{imgUploadMessage}</span> : <span className="text-slate-600 text-xxs font-semibold">{imgUploadMessage}</span>
           }
           {
             formData.imageUrls.map((url, index) => {
@@ -351,7 +352,7 @@ export default function CreateListing() {
           }
 
           {
-            message.includes("Error") && <span className="text-red-600 font-semibold">{message}</span>
+            message.includes("Error") && <span className="text-red-600 text-xxs font-semibold">{message}</span>
           }
           <button 
             className="p-3 bg-slate-700 rounded-lg text-white tracking-wider font-semibold uppercase hover:opacity-85 disabled:opacity-85"
