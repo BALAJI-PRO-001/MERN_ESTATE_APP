@@ -20,7 +20,7 @@ export default function CreateListing() {
     bedrooms: 1,
     bathrooms: 1,
     regularPrice: 50,
-    discountPrice: 50,
+    discountPrice: 0,
     offer: false,
     parking: false,
     furnished: false,
@@ -120,7 +120,6 @@ export default function CreateListing() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    
     try {
       if (formData.imageUrls.length < 1) {
         setImgUploadMessage("Error: You must upload at least one image . . . .");
@@ -145,13 +144,15 @@ export default function CreateListing() {
       setLoading(false);
 
       if (data.success === false) {
-        return setMessage("Error" + data.message);
+        if (data.message.includes("Listing validation failed"))
+          return setMessage("Error: Please ensure you fill in all necessary inputs . . . .");
+        else 
+          return setMessage("Error: " + data.message);
       }
-
-      navigate("/home");
+      navigate("/home");     
     } catch (error) {
       setLoading(false);
-      setMessage("Error" + error.message);
+      setMessage("Error: " + error.message);
     }
   }
 
@@ -280,20 +281,24 @@ export default function CreateListing() {
                 <span className="text-xs">($ / month)</span>
               </div>
             </div>
-            <div className="flex items-center gap-1">
-              <input 
-                type="number" 
-                id="discountPrice" 
-                min="50" required 
-                className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600 font-semibold  w-24"
-                value={formData.discountPrice}
-                onChange={onChangeEventHandler}
-              />
-              <div className="flex flex-col text-center">
-                <p>Discounted price</p> 
-                <span className="text-xs">($ / month)</span>
-              </div>
-            </div>
+            {
+              formData.offer && (
+                <div className="flex items-center gap-1">
+                  <input 
+                    type="number" 
+                    id="discountPrice" 
+                    min="0" required 
+                    className="p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-green-600 font-semibold  w-24"
+                    value={formData.discountPrice}
+                    onChange={onChangeEventHandler}
+                  />
+                  <div className="flex flex-col text-center">
+                    <p>Discounted price</p> 
+                    <span className="text-xs">($ / month)</span>
+                  </div>
+                </div>
+              )
+            }
           </div>
 
         </div>
@@ -351,9 +356,9 @@ export default function CreateListing() {
           <button 
             className="p-3 bg-slate-700 rounded-lg text-white tracking-wider font-semibold uppercase hover:opacity-85 disabled:opacity-85"
             onClick={handleSubmit}
-            disabled={loading}
+            disabled={loading || imgUploadMessage.includes("Uploading")}
           >
-            { loading ? "Loading . . ." : "Create Listing" }
+            { loading ? "Creating . . ." : "Create Listing" }
           </button>
         </div>
 
