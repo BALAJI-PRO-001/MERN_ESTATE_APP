@@ -9,7 +9,7 @@ export const verifyToken = (req, res, next) => {
 
   jwt.verify(accessToken, process.env.JWT_SECRET_KEY, (err, decodedId) => {
     if (err) return next(errorHandler(403, "Forbidden"));
-    req.verifyedUserId = decodedId
+    req.verifiedUserId = decodedId;
     next();
   });
 }
