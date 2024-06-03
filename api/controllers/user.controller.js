@@ -4,7 +4,7 @@ import User from "../models/user.model.js";
 import Listing from "../models/listing.model.js";
 
 export const updateUser = async (req, res, next) => {
-  if (req.verifyedUserId !== req.params.id) 
+  if (req.verifiedUserId !== req.params.id) 
     return next(errorHandler(401, "Unauthorized"));
   
   try {
@@ -32,7 +32,7 @@ export const updateUser = async (req, res, next) => {
 
 
 export const deleteUser = async (req, res, next) => {
-  if (req.verifyedUserId !== req.params.id) 
+  if (req.verifiedUserId !== req.params.id) 
     return next(errorHandler(401, "Unauthorized"));
 
   try {
@@ -46,7 +46,7 @@ export const deleteUser = async (req, res, next) => {
 
 
 export const getUserListings = async(req, res, next) => {
-  if (req.verifyedUserId !== req.params.id) 
+  if (req.verifiedUserId !== req.params.id) 
     return next(errorHandler(401, "Unauthorized"));
 
   try {
