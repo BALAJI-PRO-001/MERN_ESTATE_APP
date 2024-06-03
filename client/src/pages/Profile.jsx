@@ -39,6 +39,7 @@ export default function Profile() {
   const [errMessage, setErrMessage] = useState("");
   const [imgUploadMessage, setImgUploadMessage] = useState("");
   const [showLisingsMessage, setShowListingsMessage] = useState("");
+  const [deleteListingMessage, setDeleteListingMessage] = useState({});
   const [userListings, setUserListings] = useState([]);
 
 
@@ -232,6 +233,24 @@ export default function Profile() {
     }
   }
   
+
+  async function handleDeleteListing(listingId) {
+    try {
+      const res = await fetch(`/api/listing/delete/${listingId}1`, {
+        method: "DELETE"
+      });
+      const data = await res.json();
+      
+      if (data.success === false) {
+        // deleteListingMessage({message: "Error: " + data.message, listingId: listingId});
+        console.log(data.message);
+      }
+    } catch(error) {
+      // deleteListingMessage({message: error.message});
+      console.log(error.message);
+    }
+  }
+
   return (
     <div className="p-3 max-w-lg mx-auto">
       <form className="flex flex-col relative">
@@ -314,45 +333,46 @@ export default function Profile() {
       <button
           className="font-semibold bg-green-700 text-white p-3 mt-2 rounded-lg hover:opacity-95 disabled:opacity-80 w-full"
           onClick={handleShowListings}
-          // disabled={loading}
         >
-          Show Listings
+          Show Listings 
       </button>
       {
         showLisingsMessage.includes("Error") ? <span className="text-red-600 font-semibold text-1xl block mt-1 text-center">{showLisingsMessage}</span> :
                                                <span className="text-slate-600 font-semibold text-1xl block mt-1 text-center">{showLisingsMessage}</span>
       }
       {
-        userListings.length > 0 && <p className="text-slate-600 m-5 font-semibold text-center text-2xl">Your Listings</p>
+        userListings.length > 0 && <p className="m-5 font-semibold text-center text-2xl">Your Listings</p>
       }
       {
         userListings.map((listing, index) => {
           return (
-            <div className="mt-2" key={index}>
-              <div key={index} className="flex p-3 border border-gray-300 rounded-lg justify-between items-center">
+           <div key={index} className="border border-slate-300 rounded-lg mt-3 p-3">
+              <Link to={`/listing/${listing._id}`}>
+                <p className="text-center mb-3 text-slate-700 font-semibold hover:text-blue-600">{listing.name}</p>
+              </Link>
+              <Link to={`/listing/${listing._id}`}>
                 <img 
-                  src={listing.imageUrls[0]}
-                  alt="Loading"
-                  className="h-25 w-20 object-contain rounded-lg"
+                  src={listing.imageUrls[0]} 
+                  alt="loading" 
+                  className="object-contain rounded-lg mt-2 m-auto"
                 />
-                <div className="flex gap-3">
-                  <button 
-                    type="button"
-                    className="h-10 px-5 bg-green-600 text-white font-semibold tracking-wider rounded-lg uppercase hover:opacity-75"
-                    // onClick={() => handleRemoveImage(index)}
-                  >
-                    Edit
-                  </button>
-                  <button 
-                    type="button"
-                    className="h-10 px-2 bg-red-600 text-white font-semibold tracking-wider rounded-lg uppercase hover:opacity-75"
-                    // onClick={() => handleRemoveImage(index)}
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            </div>
+              </Link>
+              <button 
+                className="bg-green-600 text-white w-full mt-2 py-3 rounded-lg font-semibold "
+                // onClick={}
+              >
+                Edit Listing</button> 
+              <br/>
+              <button 
+                className="bg-red-600 text-white w-full mt-3 py-3 rounded-lg font-semibold "
+                onClick={() => handleDeleteListing(listing._id)}
+              >
+                Delete Listing
+              </button>
+              {
+                listing._id === deleteListingMessage.listingId && <span className="text-red-600 font-semibold text-1xl block mt-1 text-center">{deleteListingMessage.message}</span>
+              }
+           </div>
           );
         })
       }
