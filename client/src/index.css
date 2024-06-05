@@ -6,6 +6,21 @@ body {
   background-color: rgb(241, 245, 241);
 }
 
+.w-62px {
+  width: 62px;
+}
+
+.h-60px {
+  height: 60px;
+}
+
+.w-460px {
+  width: 460px;
+}
+
+.h-260px {
+  height: 260px;
+}
 
 @media (max-width: 400px) {
   .text-xxs {
