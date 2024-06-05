@@ -7,7 +7,7 @@ import { useRef, useState, useEffect } from "react";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL, list } from "firebase/storage";
 import { Link } from "react-router-dom";
 import { app } from "../utils/firebase.js";
-import userSlice, { 
+import { 
   updateUserStart, 
   updateUserSuccess, 
   updateUserFailure,
@@ -41,6 +41,7 @@ export default function Profile() {
   const [showLisingsMessage, setShowListingsMessage] = useState("");
   const [deleteListingMessage, setDeleteListingMessage] = useState({});
   const [userListings, setUserListings] = useState([]);
+
 
 
   function setIcon(event) {
@@ -236,18 +237,26 @@ export default function Profile() {
 
   async function handleDeleteListing(listingId) {
     try {
-      const res = await fetch(`/api/listing/delete/${listingId}1`, {
+      const res = await fetch(`/api/listing/delete/${listingId}`, {
         method: "DELETE"
       });
-      const data = await res.json();
       
-      if (data.success === false) {
-        // deleteListingMessage({message: "Error: " + data.message, listingId: listingId});
-        console.log(data.message);
+      let data = null;
+      if (res.status != 204) {
+        data = await res.json();
       }
+      
+      if (data && data.success === false) {
+        setDeleteListingMessage({message: "Error: " + data.message, listingId: listingId}); 
+        return;
+      }
+
+      setUserListings((preUserListings) => {
+        return preUserListings.filter((listing) => listing._id !== listingId);
+      });
+
     } catch(error) {
-      // deleteListingMessage({message: error.message});
-      console.log(error.message);
+      setDeleteListingMessage({message: "Error: " + data.message, listingId: listingId});
     }
   }
 
@@ -354,17 +363,34 @@ export default function Profile() {
                 <img 
                   src={listing.imageUrls[0]} 
                   alt="loading" 
-                  className="object-contain rounded-lg mt-2 m-auto"
+                  className="w-460px h-260px rounded-lg mb-2"
                 />
               </Link>
+              <div className="flex flex-wrap justify-start gap-3 mb-2 border border-slate-300 rounded-lg p-3">
+                {
+                  listing.imageUrls.map((url, index) => {
+                    return <img 
+                      key={index}
+                      src={url} 
+                      alt="loading" 
+                      className="w-62px h-60px rounded-lg hover:cursor-pointer hover:opacity-85"
+                      onClick={(event) => {
+                        const imgElement = event.target.parentElement.previousElementSibling.children[0];
+                        imgElement.src = event.target.src;
+                      }}
+                    />
+                  })
+                }
+              </div>
               <button 
-                className="bg-green-600 text-white w-full mt-2 py-3 rounded-lg font-semibold "
+                className="bg-green-600 text-white w-full mt-2 py-3 rounded-lg font-semibold hover:opacity-85"
                 // onClick={}
               >
                 Edit Listing</button> 
               <br/>
               <button 
-                className="bg-red-600 text-white w-full mt-3 py-3 rounded-lg font-semibold "
+                type="button"
+                className="bg-red-600 text-white w-full mt-3 py-3 rounded-lg font-semibold hover:opacity-85"
                 onClick={() => handleDeleteListing(listing._id)}
               >
                 Delete Listing
