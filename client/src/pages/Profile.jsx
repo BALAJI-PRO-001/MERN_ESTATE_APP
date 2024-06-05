@@ -7,6 +7,8 @@ import { useRef, useState, useEffect } from "react";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL, list } from "firebase/storage";
 import { Link } from "react-router-dom";
 import { app } from "../utils/firebase.js";
+import { FaSearch } from "react-icons/fa";
+
 import { 
   updateUserStart, 
   updateUserSuccess, 
@@ -41,6 +43,7 @@ export default function Profile() {
   const [showLisingsMessage, setShowListingsMessage] = useState("");
   const [deleteListingMessage, setDeleteListingMessage] = useState({});
   const [userListings, setUserListings] = useState([]);
+  const [listings, setListings] = useState([]);
 
 
 
@@ -228,9 +231,10 @@ export default function Profile() {
       }
 
       setUserListings(data.listings);
+      setListings(data.listings);
 
     } catch (error) {
-      setShowListingsMessage("Error" + error.message);
+      setShowListingsMessage("Error: " + error.message);
     }
   }
   
@@ -255,8 +259,20 @@ export default function Profile() {
         return preUserListings.filter((listing) => listing._id !== listingId);
       });
 
+
     } catch(error) {
       setDeleteListingMessage({message: "Error: " + data.message, listingId: listingId});
+    }
+  }
+
+
+  function sortListings(searchString) {
+    if (searchString.trim() == "") {
+      setListings(userListings);
+    } else {
+      setListings((preListing) => {
+        return preListing.filter((listing) => listing.name.toLowerCase().includes(searchString))
+      });
     }
   }
 
@@ -350,10 +366,23 @@ export default function Profile() {
                                                <span className="text-slate-600 font-semibold text-1xl block mt-1 text-center">{showLisingsMessage}</span>
       }
       {
-        userListings.length > 0 && <p className="m-5 font-semibold text-center text-2xl">Your Listings</p>
+        userListings.length > 0 && (
+          <div className="flex flex-col gap-3 mt-6 mb-4">
+            <p className=" font-semibold text-center text-2xl">Your Listings</p>
+            <div className="bg-white h-12 rounded-lg flex item-center">
+              <input 
+                placeholder="Search . . . ."
+                className="focus:outline-none w-full font-semibold h-ful rounded-lg ml-5 text-lg text-slate-600" 
+                onChange={(event) => sortListings(event.target.value)}
+              />
+              <FaSearch className="text-slate-600 h-full mr-6 w-5"></FaSearch>
+            </div>
+            { listings.length <= 0 && <p className="text-center font-semibold text-red-600">No listings are available . . . .</p>}
+          </div>
+        )
       }
       {
-        userListings.map((listing, index) => {
+        listings.map((listing, index) => {
           return (
            <div key={index} className="border border-slate-300 rounded-lg mt-3 p-3">
               <Link to={`/listing/${listing._id}`}>
