@@ -256,6 +256,9 @@ export default function Profile() {
       }
 
       setUserListings((preUserListings) => {
+        setListings((preListings) => {
+          return preListings.filter((listing) => listing._id !== listingId);
+        });
         return preUserListings.filter((listing) => listing._id !== listingId);
       });
 
@@ -267,7 +270,8 @@ export default function Profile() {
 
 
   function sortListings(searchString) {
-    if (searchString.trim() == "") {
+    searchString = searchString.toLowerCase().trim();
+    if (searchString == "") {
       setListings(userListings);
     } else {
       setListings((preListing) => {
@@ -412,7 +416,7 @@ export default function Profile() {
                 }
               </div>
               <button 
-                className="bg-green-600 text-white w-full mt-2 py-3 rounded-lg font-semibold hover:opacity-85"
+                className="bg-green-700 text-white w-full mt-2 py-3 rounded-lg font-semibold hover:opacity-85"
                 // onClick={}
               >
                 Edit Listing</button> 
