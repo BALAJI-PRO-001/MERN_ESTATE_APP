@@ -13,6 +13,8 @@ export const createListing = async (req, res, next) => {
   }
 }
 
+
+
 export const deleteListing = async (req, res, next) => {
   try {
     const listing = await Listing.findById(req.params.id);
@@ -28,6 +30,33 @@ export const deleteListing = async (req, res, next) => {
     await Listing.findByIdAndDelete(req.params.id);
     res.status(204).json({});
   } catch (error) {
+    next(error);
+  }
+}
+
+
+export const updateListing = async (req, res, next) => {
+  const listing = await Listing.findById(req.params.id);
+
+  if (!listing) {
+    return next(errorHandler(404, "Listing not found"));  
+  }
+
+  if (req.verifiedUserId !== listing.userRef) {
+    return next(errorHandler(401, "Unauthorized"));
+  }
+
+  try {
+    const updatedListing = await Listing.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      {new: true}
+    );
+    res.status(200).json({
+      status: true,
+      listing: updatedListing
+    });
+  } catch(error) {
     next(error);
   }
 }
