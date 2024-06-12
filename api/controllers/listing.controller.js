@@ -18,7 +18,6 @@ export const createListing = async (req, res, next) => {
 export const deleteListing = async (req, res, next) => {
   try {
     const listing = await Listing.findById(req.params.id);
-    
     if (!listing) {
       return next(errorHandler(404, "Listing not found"));
     }
@@ -35,9 +34,9 @@ export const deleteListing = async (req, res, next) => {
 }
 
 
+
 export const updateListing = async (req, res, next) => {
   const listing = await Listing.findById(req.params.id);
-
   if (!listing) {
     return next(errorHandler(404, "Listing not found"));  
   }
@@ -55,6 +54,25 @@ export const updateListing = async (req, res, next) => {
     res.status(200).json({
       status: true,
       listing: updatedListing
+    });
+  } catch(error) {
+    next(error);
+  }
+}
+
+
+
+
+export const getListing = async (req, res, next) => {
+  try {
+    const listing = await Listing.findById(req.params.id);
+    if (!listing) {
+      return next(errorHandler(404, "Listing not found"));  
+    }
+
+    res.status(200).json({
+      status: true,
+      listing: listing
     });
   } catch(error) {
     next(error);
