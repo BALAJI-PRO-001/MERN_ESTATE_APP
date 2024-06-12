@@ -375,8 +375,8 @@ export default function Profile() {
             <p className=" font-semibold text-center text-2xl">Your Listings</p>
             <div className="bg-white h-12 rounded-lg flex item-center">
               <input 
-                placeholder="Search . . . ."
-                className="focus:outline-none w-full font-semibold h-ful rounded-lg ml-5 text-lg text-slate-600" 
+                placeholder="Search listings based on name . . ."
+                className="focus:outline-none w-full font-semibold h-ful rounded-lg ml-5  text-slate-600" 
                 onChange={(event) => sortListings(event.target.value)}
               />
               <FaSearch className="text-slate-600 h-full mr-6 w-5"></FaSearch>
@@ -396,7 +396,7 @@ export default function Profile() {
                 <img 
                   src={listing.imageUrls[0]} 
                   alt="loading" 
-                  className="w-460px h-260px rounded-lg mb-2"
+                  className="w-460px h-260px rounded-lg mb-2 "
                 />
               </Link>
               <div className="flex flex-wrap justify-start gap-3 mb-2 border border-slate-300 rounded-lg p-3">
@@ -415,11 +415,9 @@ export default function Profile() {
                   })
                 }
               </div>
-              <button 
-                className="bg-green-700 text-white w-full mt-2 py-3 rounded-lg font-semibold hover:opacity-85"
-                // onClick={}
-              >
-                Edit Listing</button> 
+              <Link to={`/update-listing/${listing._id}`}>
+                <button className="bg-green-700 text-white w-full mt-2 py-3 rounded-lg font-semibold hover:opacity-85" >Edit Listing </button> 
+              </Link>
               <br/>
               <button 
                 type="button"
