@@ -22,6 +22,7 @@ body {
   height: 260px;
 }
 
+
 @media (max-width: 400px) {
   .text-xxs {
     font-size: 11px;

@@ -169,7 +169,7 @@ export default function UpdateListing() {
         else 
           return setMessage("Error: " + data.message);
       }
-      navigate(`/listing/${data.listing.userRef}`);     
+      navigate(`/listing/${data.listing._id}`);     
     } catch (error) {
       setLoading(false);
       setMessage("Error: " + error.message);
