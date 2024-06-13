@@ -283,9 +283,10 @@ export default function Profile() {
   return (
     <div className="p-3 max-w-lg mx-auto">
       <form className="flex flex-col relative">
-        <input type="file" ref={fileRef} hidden onChange={(event) => setFile(event.target.files[0])}/>
+      <p className=" font-semibold text-center text-2xl mt-4">Account Information</p>
+      <input type="file" ref={fileRef} hidden onChange={(event) => setFile(event.target.files[0])}/>
         <img
-          className="rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-4"
+          className="rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2"
           src={ formData.avatar || currentUser.avatar}
           alt="profile"
           onClick={() => fileRef.current.click()}
