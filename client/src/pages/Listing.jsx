@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore from "swiper";
-import { Navigation } from "swiper/modules";
-import "swiper/css/bundle";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 export default function Listing() {
-  SwiperCore.use([Navigation]);
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState(false);
@@ -47,7 +46,7 @@ export default function Listing() {
       {
         listing && (
           <React.Fragment>
-            <Swiper navigation>
+            <Swiper spaceBetween={30} pagination={{clickable: true}} modules={[Pagination]}>
               {
                 listing.imageUrls.map((url, index) => {
                   return (
