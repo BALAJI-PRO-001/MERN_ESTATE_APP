@@ -62,9 +62,8 @@ export default function Listings() {
 
   function sortListings(searchString) {
     searchString = searchString.toLowerCase().trim();
-    if (searchString == "") {
-      setListings(userListings);
-    } else {
+    setListings(userListings);
+    if (searchString.length > 0) {
       setListings((preListing) => {
         return preListing.filter((listing) => listing.name.toLowerCase().includes(searchString))
       });
@@ -77,12 +76,19 @@ export default function Listings() {
         userListings.length > 0 && (
           <div className="flex flex-col gap-3 mt-6 mb-4 w-full items-center">
             <p className=" font-semibold text-center text-2xl">Your Listings</p>
-            <div className="bg-white w-[50%] h-12 rounded-lg flex item-cente">
+            <div className="bg-white w-[50%] c-s-w h-12 rounded-lg flex item-center border border-slate-300">
               <input
                 placeholder="Search . . ."
                 className="focus:outline-none font-semibold w-full h-ful rounded-lg ml-5text-slate-600"
                 onChange={(event) => sortListings(event.target.value)}
                 style={{ textIndent: "20px" }}
+                onFocus={(event) => {
+                  event.target.parentElement.classList.add("border-green-600");
+                }}
+                onBlur={(event) => {
+                  event.target.parentElement.classList.remove("border-green-600");
+                  event.target.parentElement.classList.add("border-slate-300");
+                }}
               />
               <FaSearch className="text-slate-600 h-full mr-6 w-5"></FaSearch>
             </div>
