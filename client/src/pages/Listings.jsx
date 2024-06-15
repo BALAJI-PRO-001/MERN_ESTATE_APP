@@ -79,9 +79,9 @@ export default function Listings() {
             <div className="bg-white w-[50%] c-s-w h-12 rounded-lg flex item-center border border-slate-300">
               <input
                 placeholder="Search . . ."
-                className="focus:outline-none font-semibold w-full h-ful rounded-lg ml-5text-slate-600"
+                className="focus:outline-none font-semibold w-full h-ful rounded-lg ml-5 text-slate-600"
                 onChange={(event) => sortListings(event.target.value)}
-                style={{ textIndent: "20px" }}
+                style={{ textIndent: "5px" }}
                 onFocus={(event) => {
                   event.target.parentElement.classList.add("border-green-600");
                 }}

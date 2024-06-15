@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
 import 'swiper/css';
@@ -9,19 +10,20 @@ import {
   FaBath,
   FaBed,
   FaChair,
-  FaMapMarkedAlt,
   FaMapMarkerAlt,
   FaParking,
   FaShare,
 } from 'react-icons/fa';
-// import Contact from '../components/Contact';
+import Contact from '../components/Contact';
 
 export default function Listing() {
+  const { currentUser } = useSelector((state) => state.user);
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState(false);
   const [copied, setCopied] = useState(false);
   const params = useParams();
+  const [contact, setContact] = useState(false);
 
   useEffect(() => {
     try {
@@ -151,6 +153,19 @@ export default function Listing() {
                   {listing.furnished ? 'Furnished' : 'Unfurnished'}
                 </li>
               </ul>
+              {
+                currentUser && currentUser._id !== listing.userRef &&!contact && (
+                  <button 
+                    className="font-semibold text-white p-3 bg-slate-700 rounded-lg uppercase tracking-wider hover:opacity-85"
+                    onClick={() => setContact(true)}
+                  > 
+                    Contact Landlord
+                  </button>
+                )
+              }
+              {
+                contact && <Contact listing={listing} />
+              }
             </div>
           </React.Fragment>
         )
