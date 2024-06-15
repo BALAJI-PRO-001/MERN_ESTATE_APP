@@ -23,8 +23,37 @@ body {
 }
 
 
+
 @media (max-width: 400px) {
   .text-xxs {
     font-size: 11px;
   }
+
 }
+
+@media (min-width: 400px) and (max-width: 800px) {
+  .c-w {
+    width: 100%;
+  }
+}
+
+
+@media (min-width: 800px) and (max-width: 1000px) {
+  .c-w {
+    width: 40%;
+  }
+}
+
+
+@media (min-width: 1000px) and (max-width: 1200px) {
+  .c-w {
+    width: 45%;
+  }
+}
+
+
+@media (min-width: 1200px) {
+  .c-w {
+    width: 30%;
+  }
+} 

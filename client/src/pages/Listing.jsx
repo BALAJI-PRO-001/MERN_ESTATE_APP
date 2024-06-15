@@ -82,7 +82,7 @@ export default function Listing() {
                 })
               }
             </Swiper>
-            <div className='fixed top-[70%] right-[3%] z-10 border rounded-full border-black-300 w-12 h-12 flex justify-center items-center bg-slate-100 cursor-pointer'>
+            <div className='fixed top-[13%] right-[3%] z-10 border rounded-full border-black-300 w-12 h-12 flex justify-center items-center bg-slate-100 cursor-pointer'>
               <FaShare
                 className='text-blue-700'
                 onClick={() => {
@@ -108,7 +108,7 @@ export default function Listing() {
                 {listing.type === "rent" && " / month"}
               </p>
 
-              <p className='flex items-center mt-6 gap-2 text-slate-700 font-semibold text-sm'>
+              <p className='flex items-center mt-3 gap-2 text-slate-700 font-semibold text-sm'>
                 <FaMapMarkerAlt className='text-green-700' />
                 {listing.address}
               </p>
@@ -151,8 +151,6 @@ export default function Listing() {
                   {listing.furnished ? 'Furnished' : 'Unfurnished'}
                 </li>
               </ul>
-
-              
             </div>
           </React.Fragment>
         )

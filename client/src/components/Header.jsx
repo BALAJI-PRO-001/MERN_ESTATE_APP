@@ -20,7 +20,7 @@ export default function Header() {
         <ul className="flex gap-4">
           <Link to="/"><li className="hidden sm:inline text-slate-700 font-bold hover:text-blue-700 cursor-pointer">Home</li></Link>
           <Link to="/about"><li className="hidden sm:inline text-slate-700 font-bold hover:text-blue-700 cursor-pointer">About</li></Link>
-          <Link to="/profile">
+          <Link to="/account">
             {
               currentUser ? <img className="w-7 h-7 rounded-full object-cover" src={currentUser.avatar} alt="profile" />
               : <li className="sm:inline text-slate-700 font-bold hover:text-blue-700 cursor-pointer">Sign In</li>
