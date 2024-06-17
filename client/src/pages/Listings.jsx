@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { FaSearch } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Listings() {
   const { currentUser } = useSelector((state) => state.user);
   const [deleteListingMessage, setDeleteListingMessage] = useState({});
   const [userListings, setUserListings] = useState([]);
   const [listings, setListings] = useState([]);
+  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -21,8 +22,8 @@ export default function Listings() {
         }
 
         setUserListings(data.listings);
-        setListings(data.listings);  
-      } catch(error) {
+        setListings(data.listings);
+      } catch (error) {
         console.warn(error.message);
       }
     }
@@ -102,7 +103,7 @@ export default function Listings() {
             return (
               <div key={index} className="border border-slate-300 rounded-lg m-5 p-3 c-w">
                 <Link to={`/listing/${listing._id}`}>
-                  <p className="text-center mb-3 text-slate-700 font-semibold hover:text-blue-600">{listing.name}</p>
+                  <p className="text-center mb-3 text-slate-700 font-semibold hover:text-blue-600">Listing: {index + 1}</p>
                 </Link>
                 <Link to={`/listing/${listing._id}`}>
                   <img
@@ -130,17 +131,35 @@ export default function Listings() {
                     })
                   }
                 </div>
-                <Link to={`/update-listing/${listing._id}`}>
-                  <button className="bg-green-700 text-white w-full mt-2 py-3 rounded-lg font-semibold hover:opacity-85" >Edit Listing </button>
-                </Link>
-                <br />
-                <button
-                  type="button"
-                  className="bg-red-600 text-white w-full mt-3 py-3 rounded-lg font-semibold hover:opacity-85"
-                  onClick={() => handleDeleteListing(listing._id)}
-                >
-                  Delete Listing
-                </button>
+                <div className="p-3 border border-slate-300 mt-2 mb-2 rounded-lg">
+                  <p className="font-semibold text-center mb-1 text-slate-700">Listing Details</p>
+                  <p className="font-semibold mt-1 text-gray-700">Name: <span className="font-normal text-black">{listing.name}</span></p>
+                  <p className="font-semibold mt-1 text-gray-700">Type: <span className="font-normal text-black">{listing.type}</span></p>
+                  <p className="font-semibold mt-1 text-gray-700">Offer: <span className="font-normal text-black">{listing.offer ? "true" : "false"}</span></p>
+                  <p className="font-semibold mt-1 text-gray-700">Parking: <span className="font-normal text-black">{listing.parking ? "true" : "false"}</span></p>
+                  <p className="font-semibold mt-1 text-gray-700">Furnished: <span className="font-normal text-black">{listing.furnished ? "true" : "false"}</span></p>
+                  <p className="font-semibold mt-1 text-gray-700">Bedrooms: <span className="font-normal text-black">{listing.bedrooms}</span></p>
+                  <p className="font-semibold mt-1 text-gray-700">Bathrooms: <span className="font-normal text-black">{listing.bathrooms}</span></p>
+                  <p className="font-semibold mt-1 text-gray-700">Regular Price: <span className="font-normal text-black"> $  {listing.regularPrice}</span></p>
+                  <p className="font-semibold mt-1 text-gray-700">Discount Price: <span className="font-normal text-black"> $  {listing.discountPrice}</span></p>
+                  <p className="font-semibold mt-1 text-gray-700">Address: <span className="font-normal text-black">{listing.address}</span></p>
+                  <p className="font-semibold mt-1 mb-2 text-gray-700">Description: <span className="font-normal text-black">{listing.description}</span></p>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <button
+                    className="bg-green-700 text-white w-full py-3 rounded-lg font-semibold hover:opacity-85"
+                    onClick={() => navigate(`/update-listing/${listing._id}`)}
+                  >
+                    Edit Listing
+                  </button>
+                  <button
+                    type="button"
+                    className="bg-red-600 text-white w-full py-3 rounded-lg font-semibold hover:opacity-85"
+                    onClick={() => handleDeleteListing(listing._id)}
+                  >
+                    Delete Listing
+                  </button>
+                </div>  
                 {
                   listing._id === deleteListingMessage.listingId && <span className="text-red-600 font-semibold text-1xl block mt-1 text-center">{deleteListingMessage.message}</span>
                 }
