@@ -111,18 +111,18 @@ export default function Listings() {
                     alt="loading"
                     className="w-full h-[300px] rounded-lg mb-2 object-fill"
                     style={{
-                      display: "block",
+                      display: "block"
                     }}
                   />
                 </Link>
-                <div className="flex justify-start gap-3 mb-2 border border-slate-300 rounded-lg p-3">
+                <div className="flex flex-wrap gap-2 justify-start mb-2 border border-slate-300 rounded-lg p-3">
                   {
                     listing.imageUrls.map((url, index) => {
                       return <img
                         key={index}
                         src={url}
                         alt="loading"
-                        className="w-[20%] h-60px rounded-lg hover:cursor-pointer hover:opacity-85"
+                        className="w-[60px] h-[55px] rounded-lg hover:cursor-pointer hover:opacity-85"
                         onClick={(event) => {
                           const imgElement = event.target.parentElement.previousElementSibling.children[0];
                           imgElement.src = event.target.src;
