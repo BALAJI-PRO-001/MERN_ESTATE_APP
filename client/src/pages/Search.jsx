@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Search() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [listings, setListings] = useState();
   const [formData, setFromData] = useState({
     searchTerm: "",
     type: "all",
@@ -10,15 +12,15 @@ export default function Search() {
     furnished: false,
     offer: false,
     sort: "created_at",
-    order: "desc" 
+    order: "desc"
   });
-  
+
 
   function onChangeHandler(event) {
     if (
       event.target.id === "all" ||
       event.target.id === "rent" ||
-      event.target.id === "sale" 
+      event.target.id === "sale"
     ) {
       setFromData((preFormData) => {
         return { ...preFormData, type: event.target.id };
@@ -50,6 +52,38 @@ export default function Search() {
   }
 
 
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const searchTermFromUrl = urlParams.get("searchTerm");
+    const typeFromUrl = urlParams.get("type");
+    const parkingFromUrl = urlParams.get("parking");
+    const furnishedFromUrl = urlParams.get("furnished");
+    const offerFromUrl = urlParams.get("offer"); false
+    const sortFromUrl = urlParams.get("sort");
+    const orderFromUrl = urlParams.get("order");
+
+    if (searchTermFromUrl || furnishedFromUrl || parkingFromUrl || offerFromUrl || sortFromUrl || orderFromUrl || typeFromUrl) {
+      setFromData({
+        searchTerm: searchTermFromUrl || '',
+        type: typeFromUrl || 'all',
+        parking: parkingFromUrl === 'true' ? true : false,
+        furnished: furnishedFromUrl === 'true' ? true : false,
+        offer: offerFromUrl === 'true' ? true : false,
+        sort: sortFromUrl || 'createdAt',
+        order: orderFromUrl || 'desc',
+      });
+    }
+
+    const fetchListings = async () => {
+      setLoading(true);
+      const res = await fetch(`/api/listing/get?${urlParams.toString()}`);
+      // const data = await res.json();
+      setLoading(false);
+    }
+    fetchListings();
+  }, [location.search]);
+
+
   function handleSubmit(event) {
     event.preventDefault();
     const urlParams = new URLSearchParams();
@@ -63,14 +97,14 @@ export default function Search() {
     const searchQuery = urlParams.toString();
     navigate(`/search?${searchQuery}`);
   }
- 
+
 
   return (
-    <div className="flex flex-col md:flex-row">
+    <div className="flex flex-col md:flex-row w-full">
       <div className="border border-slate-300 p-7 md:min-h-screen">
         <form className="flex flex-col gap-6">
           <div className="flex items-center gap-2">
-            <label className="whitespace-nowrap font-semibold">Search Term: </label>
+            <label className="whitespace-nowrap font-semibold">Search Term </label>
             <input
               type="text"
               id="searchTerm"
@@ -151,8 +185,8 @@ export default function Search() {
 
           <div className="flex gap-2 items-center">
             <span className="font-semibold">Sort: </span>
-            <select 
-              id="sort_order" 
+            <select
+              id="sort_order"
               className="p-3 bg-white border border-slate-300 rounded-lg w-full text-center"
               defaultValue={"createdAt_desc"}
               onChange={onChangeHandler}
@@ -164,7 +198,7 @@ export default function Search() {
             </select>
           </div>
 
-          <button 
+          <button
             className='bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 font-semibold tracking-wider'
             onClick={handleSubmit}
           >
@@ -174,8 +208,10 @@ export default function Search() {
       </div>
 
       <div className="flex">
-        <h1 className="text-2xl text-slate-600 font-semibold m-5">Listings:</h1>
+        {
+          loading ? <p className="text-2xl font-semibold m-5">Loading . . . .</p> : <h1 className="text-2xl text-slate-600 font-semibold m-5">Listings:</h1>
+        }
       </div>
     </div>
-  ); 
+  );
 }
