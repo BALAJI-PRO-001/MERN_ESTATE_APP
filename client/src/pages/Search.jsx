@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ListingItem from "../components/ListingItem";
 
 export default function Search() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [listings, setListings] = useState();
+  const [message, setMessage] = useState("Listing Results");
   const [formData, setFromData] = useState({
     searchTerm: "",
     type: "all",
@@ -77,8 +79,15 @@ export default function Search() {
     const fetchListings = async () => {
       setLoading(true);
       const res = await fetch(`/api/listing/get?${urlParams.toString()}`);
-      // const data = await res.json();
+      const data = await res.json();
+      
+      if (data.listings.length == 0) {
+        setLoading(false);
+        return setMessage("Message: No listing found . . . .");
+      }
+
       setLoading(false);
+      setListings(data.listings);
     }
     fetchListings();
   }, [location.search]);
@@ -207,10 +216,21 @@ export default function Search() {
         </form>
       </div>
 
-      <div className="flex">
+      <div className="flex flex-1 flex-col">
         {
-          loading ? <p className="text-2xl font-semibold m-5">Loading . . . .</p> : <h1 className="text-2xl text-slate-600 font-semibold m-5">Listings:</h1>
+          loading ? <p className="text-1xl sm:text-[20px] text-center w-full m-5">Loading . . . .</p> : 
+                    <p className="text-1xl sm:text-[20px] font-semibold text-center w-full m-5">{message}</p>
         }
+
+        <div className="px-5 mt-0 flex flex-wrap gap-4">
+          {
+            !loading && listings && listings.map((listing) => {
+              return (
+                <ListingItem key={listing._id} listing={listing}/>
+              );
+            })
+          }
+        </div>
       </div>
     </div>
   );
