@@ -6,14 +6,14 @@ export default function Search() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [listings, setListings] = useState();
-  const [message, setMessage] = useState("Listing Results");
+  const [message, setMessage] = useState(null);
   const [formData, setFromData] = useState({
     searchTerm: "",
     type: "all",
     parking: false,
     furnished: false,
     offer: false,
-    sort: "created_at",
+    sort: "createdAt",
     order: "desc"
   });
 
@@ -77,16 +77,18 @@ export default function Search() {
     }
 
     const fetchListings = async () => {
+      setMessage(null);
       setLoading(true);
       const res = await fetch(`/api/listing/get?${urlParams.toString()}`);
       const data = await res.json();
       
       if (data.listings.length == 0) {
         setLoading(false);
-        return setMessage("Message: No listing found . . . .");
+        return setMessage("No listing found . . . .");
       }
 
       setLoading(false);
+      setMessage(null);
       setListings(data.listings);
     }
     fetchListings();
@@ -217,14 +219,16 @@ export default function Search() {
       </div>
 
       <div className="flex flex-1 flex-col">
+        <p className="text-1xl sm:text-[20px] text-center w-full mt-5 mb-5 font-semibold">Listing Results</p>
         {
-          loading ? <p className="text-1xl sm:text-[20px] text-center w-full m-5">Loading . . . .</p> : 
-                    <p className="text-1xl sm:text-[20px] font-semibold text-center w-full m-5">{message}</p>
+          loading && <p className="text-1xl sm:text-[20px] text-center font-semibold text-slate-700 w-full mt-3">Loading . . . .</p>
         }
-
+        {
+          message && <p className="text-1xl sm:text-[20px] text-center font-semibold text-slate-700 w-full">{message}</p>
+        }
         <div className="px-5 mt-0 flex flex-wrap gap-4">
           {
-            !loading && listings && listings.map((listing) => {
+            !loading && !message && listings && listings.map((listing) => {
               return (
                 <ListingItem key={listing._id} listing={listing}/>
               );
