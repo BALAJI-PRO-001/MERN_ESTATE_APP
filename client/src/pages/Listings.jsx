@@ -1,15 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { FaSearch } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ListingItem from "../components/ListingItem";
 
 export default function Listings() {
   const { currentUser } = useSelector((state) => state.user);
-  const [deleteListingMessage, setDeleteListingMessage] = useState({});
   const [userListings, setUserListings] = useState([]);
   const [listings, setListings] = useState([]);
-  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -44,7 +42,7 @@ export default function Listings() {
       }
 
       if (data && data.success === false) {
-        setDeleteListingMessage({ message: "Error: " + data.message, listingId: listingId });
+        console.warn(data.message);
         return;
       }
 
@@ -57,7 +55,7 @@ export default function Listings() {
 
 
     } catch (error) {
-      setDeleteListingMessage({ message: "Error: " + data.message, listingId: listingId });
+      console.warn(data.error);
     }
   }
 
@@ -91,10 +89,20 @@ export default function Listings() {
           </div>
         )
       }
-      <div className="flex flex-wrap gap-5 mt-5 p-5">
+      <div className="flex flex-wrap gap-4 p-4">
         {
           listings.map((listing) => {
-            return <ListingItem key={listing._id} listing={listing} handlers={"temp"} />
+            return (
+              <ListingItem 
+                key={listing._id} 
+                listing={listing} handlers={"temp"}             
+              > 
+                <Link to={`/update-listing/${listing._id}`} >
+                  <button className="text-green-600">Edit</button>
+                </Link>
+                <button className="text-red-700" onClick={() => handleDeleteListing(listing._id)}>Delete</button>
+              </ListingItem>
+            );
           })
         }
       </div>

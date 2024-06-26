@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import { MdLocationOn } from "react-icons/md";
 
-export default function ListingItem({listing}) {
+export default function ListingItem(props) {
+  const listing = props.listing;
   return (
-    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow overflow-hidden w-full sm:w-[340px] flex-grow-[1]">
+    <div className="bg-white rounded-md shadow-md hover:shadow-lg transition-shadow overflow-hidden w-full sm:w-[340px]">
       <Link to={`/listing/${listing._id}`}>
         <img 
           src={listing.imageUrls[0]} 
@@ -33,6 +34,14 @@ export default function ListingItem({listing}) {
           </div>
         </div>
       </Link>
+
+      {
+        props.children && (
+          <div className="flex gap-4 font-semibold p-3"> 
+            {props.children}
+          </div>
+        )
+      }
     </div>
   );
 }
