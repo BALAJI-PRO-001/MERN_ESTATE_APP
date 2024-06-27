@@ -6,6 +6,7 @@ import userRouter from "./routes/user.route.js";
 import authRouter from "./routes/auth.route.js";
 import listingRouter from "./routes/listing.route.js";
 
+
 const app = express();
 
 mongoose
