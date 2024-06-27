@@ -7,6 +7,7 @@ export default function Search() {
   const [loading, setLoading] = useState(false);
   const [listings, setListings] = useState();
   const [message, setMessage] = useState(null);
+  const [showMore, setShowMore] = useState(false);
   const [formData, setFromData] = useState({
     searchTerm: "",
     type: "all",
@@ -79,12 +80,19 @@ export default function Search() {
     const fetchListings = async () => {
       setMessage(null);
       setLoading(true);
+      setShowMore(false);
       const res = await fetch(`/api/listing/get?${urlParams.toString()}`);
       const data = await res.json();
       
       if (data.listings.length == 0) {
         setLoading(false);
         return setMessage("No listing found . . . .");
+      }
+
+      if (data.listings.length > 8) {
+        setShowMore(true);
+      } else {
+        setShowMore(false);
       }
 
       setLoading(false);
@@ -109,6 +117,23 @@ export default function Search() {
     navigate(`/search?${searchQuery}`);
   }
 
+  async function onShowMore() {
+    const numberOfListings = listings.length;
+    const startIndex = numberOfListings;
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set("startIndex", startIndex);
+    const searchQuery = urlParams.toString();
+    const res = await fetch(`/api/listing/get?${searchQuery}`);
+    const data = await res.json();
+    
+    if (data.listings.length < 9) {
+      setShowMore(false);
+    }
+
+    setListings((preListings) => {
+      return [...preListings, ...data.listings]
+    });
+  }
 
   return (
     <div className="flex flex-col md:flex-row w-full">
@@ -219,7 +244,7 @@ export default function Search() {
       </div>
 
       <div className="flex flex-1 flex-col">
-        <p className="text-1xl sm:text-[20px] text-center w-full mt-5 mb-5 font-semibold">Listing Results</p>
+        <p className="text-1xl sm:text-[20px] text-center w-full mt-5 mb-5 font-semibold">Listings Results</p>
         {
           loading && <p className="text-1xl sm:text-[20px] text-center font-semibold text-slate-700 w-full mt-3">Loading . . . .</p>
         }
@@ -235,6 +260,14 @@ export default function Search() {
             })
           }
         </div>
+        {
+          showMore && <button 
+            className="font-semibold text-1xl text-blue-700 m-5 text-left"
+            onClick={onShowMore}
+          >
+            Show more . . . .
+          </button>
+        }
       </div>
     </div>
   );
