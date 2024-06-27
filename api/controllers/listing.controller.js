@@ -83,20 +83,17 @@ export const getListing = async (req, res, next) => {
 
 export const getListings = async (req, res, next) => {
   try {
-    // Parse query parameters
     const limit = parseInt(req.query.limit) || 9;
     const startIndex = parseInt(req.query.startIndex) || 0;
     const searchTerm = req.query.searchTerm || "";
     const sort = req.query.sort || "createdAt";
     const order = req.query.order && req.query.order.toLowerCase() === 'asc' ? 'asc' : 'desc'; // Validate order parameter
 
-    // Filter criteria
     let offer = req.query.offer;
     let furnished = req.query.furnished;
     let parking = req.query.parking;
     let type = req.query.type;
 
-    // Default values if parameters are not provided or are false
     if (offer === undefined || offer === "false") {
       offer = { $in: [false, true] };
     }
@@ -113,22 +110,19 @@ export const getListings = async (req, res, next) => {
       type = { $in: ["sale", "rent"] };
     }
 
-    // Fetch listings from database
     const listings = await Listing.find({
       name: { $regex: searchTerm, $options: "i" },
       offer, furnished, parking, type
     })
     .sort({ [sort]: order })
     .limit(limit)
-    // .skip(startIndex);
+    .skip(startIndex);
 
-    // Respond with success and listings
     return res.status(200).json({
       success: true,
       listings: listings
     });
   } catch(error) {
-    // Pass any errors to the error-handling middleware
     next(error);
   }
 }
