@@ -85,20 +85,22 @@ export default function Listing() {
                 })
               }
             </Swiper>
-            <div className='fixed top-[13%] right-[3%] z-10 border rounded-full border-black-300 w-12 h-12 flex justify-center items-center bg-slate-100 cursor-pointer'>
+            <div className='fixed top-[13%] right-[3%] z-10 border rounded-full border-black-300 w-12 h-12 flex justify-center items-center bg-slate-100 cursor-pointer'
+              onClick={() => {
+                console.log("work");
+                navigator.clipboard.writeText(window.location.href);
+                setCopied(true);
+                setTimeout(() => {
+                  setCopied(false);
+                }, 2000);
+            }}
+            >
               <FaShare
                 className='text-blue-700'
-                onClick={() => {
-                  navigator.clipboard.writeText(window.location.href);
-                  setCopied(true);
-                  setTimeout(() => {
-                    setCopied(false);
-                  }, 2000);
-                }}
               />
             </div>
             {copied && (
-              <p className='fixed top-[63%] right-[1%] z-10 rounded-md bg-slate-100 p-2 font-semibold'>
+              <p className='fixed top-[22%] right-[1%] z-10 rounded-md bg-slate-100 p-2 font-semibold'>
                 Link copied!
               </p>
             )}
