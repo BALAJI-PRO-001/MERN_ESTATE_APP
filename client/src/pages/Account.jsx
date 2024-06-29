@@ -14,7 +14,7 @@ import {
   updateUserFailure,
   deleteUserStart,
   deleteUserSuccess,
-  deleteUserFailure,
+  deleteUserFailure,  
   signOutUserStart,
   signOutUserSuccess,
   signOutUserFailure
@@ -320,8 +320,7 @@ export default function Profile() {
         Show Listings
       </button>
       {
-        showLisingsMessage.includes("Error") ? <span className="text-red-600 font-semibold text-1xl block mt-1 text-center">{showLisingsMessage}</span> :
-          <span className="text-slate-600 font-semibold text-1xl block mt-1 text-center">{showLisingsMessage}</span>
+        showLisingsMessage  && <span className="font-semibold text-1xl block mt-1 text-red-600 text-center">{showLisingsMessage}</span>
       }
     </div>
   );
