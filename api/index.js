@@ -8,7 +8,6 @@ import listingRouter from "./routes/listing.route.js";
 import path from "path";
 const __dirname = path.resolve();
 const app = express();
-dotenv.config();
 
 mongoose
   .connect(process.env.MONGODB_CONNECTION_STRING)
