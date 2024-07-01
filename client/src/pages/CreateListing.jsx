@@ -69,8 +69,8 @@ export default function CreateListing() {
 
       uploadTask.on("state_changed",
         (snapshot) => {
-          const progress = (Math.floor((snapshot.bytesTransferred / snapshot.totalBytes) * 100));
-          setImgUploadMessage(`Uploading: ${progress}%`);
+          // const progress = (Math.floor((snapshot.bytesTransferred / snapshot.totalBytes) * 100));
+          setImgUploadMessage(`Uploading . . . .`);
         }, 
         (error) => { // error
           reject(error);
