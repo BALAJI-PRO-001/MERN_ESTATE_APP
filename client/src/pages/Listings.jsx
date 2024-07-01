@@ -89,24 +89,22 @@ export default function Listings() {
           </div>
         )
       }
-      <div className="flex justify-center w-full">
-        <div className="flex flex-wrap gap-4 p-4">
-          {
-            listings.map((listing) => {
-              return (
-                <ListingItem 
-                  key={listing._id} 
-                  listing={listing} handlers={"temp"}             
-                > 
-                  <Link to={`/update-listing/${listing._id}`} >
-                    <button className="text-green-600">Edit</button>
-                  </Link>
-                  <button className="text-red-700" onClick={() => handleDeleteListing(listing._id)}>Delete</button>
-                </ListingItem>
-              );
-            })
-          }
-        </div>
+      <div className="flex flex-wrap gap-4 mt-5">
+        {
+          listings.map((listing) => {
+            return (
+              <ListingItem
+                key={listing._id}
+                listing={listing} handlers={"temp"}
+              >
+                <Link to={`/update-listing/${listing._id}`} >
+                  <button className="text-green-600">Edit</button>
+                </Link>
+                <button className="text-red-700" onClick={() => handleDeleteListing(listing._id)}>Delete</button>
+              </ListingItem>
+            );
+          })
+        }
       </div>
     </React.Fragment>
   );

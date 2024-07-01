@@ -217,7 +217,7 @@ export default function Profile() {
       const data = await res.json();
 
       if (data.success === false) {
-        setShowListingsMessage("Error: " + data.message);
+        setShowListingsMessage(data.message);
         return;
       }
 
