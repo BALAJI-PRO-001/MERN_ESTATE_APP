@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node ./api/index.js",
     "dev": "nodemon ./api/index.js",
-    "build": "npm install && npm install --prefix client && npm run build --prefix client && npm audit fix"
+    "build": "npm install && npm install --prefix client && npm run build --prefix client && npm audit fix && touch /opt/render/project/src/start"
   },
   "author": "",
   "license": "ISC",
