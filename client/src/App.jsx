@@ -12,7 +12,6 @@ import Listing from "./pages/Listing";
 import Listings from "./pages/Listings";
 import Search from "./pages/Search";
 import Home from "./pages/Home";
-import Footer from "./components/Footer";
 
 export default function App() {
   return (
@@ -32,7 +31,6 @@ export default function App() {
           <Route path="/user/listings" element={<Listings />} />
         </Route>
       </Routes>
-      {/* <Footer></Footer> */}
     </BrowserRouter>
   );
 }

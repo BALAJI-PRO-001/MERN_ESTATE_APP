@@ -243,7 +243,7 @@ export default function Search() {
         </form>
       </div>
 
-      <div className="flex flex-1 flex-col">
+      <div className="flex flex-1 flex-col max-w-6xl">
         <p className="text-1xl sm:text-[20px] text-center w-full mt-5 mb-5 font-semibold">Listings Results</p>
         {
           loading && <p className="text-1xl sm:text-[20px] text-center font-semibold text-slate-700 w-full mt-3">Loading . . . .</p>

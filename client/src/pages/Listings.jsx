@@ -107,7 +107,7 @@ export default function Listings() {
         )
       }
 
-      <div className="flex flex-wrap gap-4 mt-5 max-w-6xl mx-auto">
+      <div className="flex flex-wrap p-3 gap-4 mt-5 max-w-6xl mx-auto">
         {
           !isAvailable && listings.map((listing) => {
             return (

@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import userRouter from "./routes/user.route.js";
 import authRouter from "./routes/auth.route.js";
 import listingRouter from "./routes/listing.route.js";
+import { logger } from "./utils/logger.js";
 import path from "path";
 const __dirname = path.resolve();
 const app = express();
@@ -21,6 +22,7 @@ mongoose
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(logger);
 
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
