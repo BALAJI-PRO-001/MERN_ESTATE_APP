@@ -6,9 +6,9 @@ import ListingItem from "../components/ListingItem";
 
 export default function Listings() {
   const { currentUser } = useSelector((state) => state.user);
-  const [userListings, setUserListings] = useState([]);
-  const [listings, setListings] = useState([]);
-  const [isAvailable, setIsAvailable] = useState(false);
+  const [userListings, setUserListings] = useState();
+  const [listings, setListings] = useState();
+  const [isAvailable, setIsAvailable] = useState(true);
 
   useEffect(() => {
     const fetchListings = async () => {
@@ -31,14 +31,11 @@ export default function Listings() {
 
 
   useEffect(() => {
-    console.log(userListings.length);
-    if (userListings.length == 0) {
-      setIsAvailable(true);
-    } else {
+    if (userListings && userListings.length == 0) 
       setIsAvailable(false);
-    }
-  }, [userListings.length]);
-
+    else 
+      setIsAvailable(true);
+  });
 
   async function handleDeleteListing(listingId) {
     try {
@@ -83,14 +80,14 @@ export default function Listings() {
   return (
     <React.Fragment>
       {
-        isAvailable && <p className="font-semibold text-[20px] text-slate-700 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        !isAvailable && userListings && <p className="font-semibold text-[20px] text-slate-700 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           No listings available. Please go back and create your own listing. <br/>
           <Link to="/create-listing" className="font-semibold text-blue-700 text-[18px]">Create Listing . . . .</Link>
         </p>
       }
 
       {
-        !isAvailable && userListings.length > 0 && (
+        isAvailable && userListings && userListings.length > 0 && (
           <div className="flex flex-col gap-3 mt-6 mb-4 w-full items-center">
             <p className=" font-semibold text-center text-2xl">Your Listings</p>
             <div className="bg-white w-[91%] mx-auto sm:max-w-3xl h-12 rounded-lg flex item-center border border-slate-300">
@@ -109,7 +106,7 @@ export default function Listings() {
 
       <div className="flex flex-wrap p-3 gap-4 mt-5 max-w-6xl mx-auto">
         {
-          !isAvailable && listings.map((listing) => {
+            isAvailable && listings &&  listings.map((listing) => {
             return (
               <ListingItem
                 key={listing._id}
