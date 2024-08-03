@@ -20,14 +20,6 @@ mongoose
   });
 
 
-// * Request for avoid cool down period
-setInterval(() => {
-  fetch("https://mern-estate-zlv0.onrender.com/request");
-}, 1000 * 10);
-
-app.get("/request", (req, res) => console.log("Request: " + req.url));
-app.get("/log", (req, res) => { res.sendFile(path.join(__dirname, "/api/logs/access.log")); });
-
 app.use(express.json());
 app.use(cookieParser());
 app.use(logger);
