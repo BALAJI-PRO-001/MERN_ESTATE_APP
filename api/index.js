@@ -28,6 +28,9 @@ app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/listing", listingRouter);
 
+app.get("/home", (req, res) => {
+  res.send("Response from server ....");
+});
 
 app.use(express.static(path.join(__dirname, '/client/dist')));
 
@@ -45,6 +48,11 @@ app.use((err, req, res, next) => {
   });
 });
 
+
+// * Request for avoid cool down period
+setInterval(() => {
+  fetch("https://mern-estate-zlv0.onrender.com/home");
+}, 1000);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
