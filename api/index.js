@@ -29,6 +29,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/listing", listingRouter);
 
 app.get("/home", (req, res) => {
+  console.log(req.url);
   res.send("Response from server ....");
 });
 
